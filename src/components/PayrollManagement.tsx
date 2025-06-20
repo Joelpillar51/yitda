@@ -1,8 +1,11 @@
-
 import { useState } from "react";
 import { Search, Download } from "lucide-react";
 
-export function PayrollManagement() {
+interface PayrollManagementProps {
+  onViewPayroll?: () => void;
+}
+
+export function PayrollManagement({ onViewPayroll }: PayrollManagementProps) {
   const [activeSubTab, setActiveSubTab] = useState("uploaded-files");
 
   const payrollFiles = [
@@ -213,7 +216,12 @@ export function PayrollManagement() {
                     </td>
                     <td className="py-4 px-4 text-sm">
                       <div className="flex items-center space-x-2">
-                        <button className="text-gray-600 hover:text-gray-800 font-medium">View</button>
+                        <button 
+                          onClick={onViewPayroll}
+                          className="text-gray-600 hover:text-gray-800 font-medium"
+                        >
+                          View
+                        </button>
                         {file.status === "Pending" && (
                           <>
                             <button className="text-green-600 hover:text-green-700 border border-green-600 px-3 py-1 rounded text-xs font-medium">Approve</button>

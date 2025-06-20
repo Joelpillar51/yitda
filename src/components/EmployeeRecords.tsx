@@ -1,7 +1,11 @@
-
 import { Search, Download, Plus } from "lucide-react";
 
-export function EmployeeRecords() {
+interface EmployeeRecordsProps {
+  onViewEmployee?: (employee: any) => void;
+  onAddEmployee?: () => void;
+}
+
+export function EmployeeRecords({ onViewEmployee, onAddEmployee }: EmployeeRecordsProps) {
   const employees = [
     {
       id: 1,
@@ -64,7 +68,10 @@ export function EmployeeRecords() {
               <Download size={16} />
               <span>Download Report</span>
             </button>
-            <button className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center space-x-2">
+            <button 
+              onClick={onAddEmployee}
+              className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center space-x-2"
+            >
               <Plus size={16} />
               <span>Add Employee</span>
             </button>
@@ -105,7 +112,12 @@ export function EmployeeRecords() {
                   <td className="py-4 px-4 text-sm text-gray-600">{employee.department}</td>
                   <td className="py-4 px-4 text-sm text-gray-600">{employee.status}</td>
                   <td className="py-4 px-4 text-sm">
-                    <button className="text-gray-600 hover:text-gray-800 font-medium">View</button>
+                    <button 
+                      onClick={() => onViewEmployee?.(employee)}
+                      className="text-gray-600 hover:text-gray-800 font-medium"
+                    >
+                      View
+                    </button>
                   </td>
                 </tr>
               ))}

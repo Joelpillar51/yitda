@@ -1,7 +1,10 @@
-
 import { Search } from "lucide-react";
 
-export function LeaveManagement() {
+interface LeaveManagementProps {
+  onViewLeaveRequest?: (request: any) => void;
+}
+
+export function LeaveManagement({ onViewLeaveRequest }: LeaveManagementProps) {
   const leaveRequests = [
     {
       id: 1,
@@ -130,7 +133,12 @@ export function LeaveManagement() {
                           <button className="text-red-600 hover:text-red-700 border border-red-600 px-3 py-1 rounded text-xs font-medium">Reject</button>
                         </>
                       )}
-                      <button className="text-gray-600 hover:text-gray-800 font-medium">View</button>
+                      <button 
+                        onClick={() => onViewLeaveRequest?.(request)}
+                        className="text-gray-600 hover:text-gray-800 font-medium"
+                      >
+                        View
+                      </button>
                     </div>
                   </td>
                 </tr>
