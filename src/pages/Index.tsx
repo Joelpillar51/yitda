@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { Sidebar } from "@/components/Sidebar";
+import { AppSidebar } from "@/components/Sidebar";
 import { Header } from "@/components/Header";
 import { StatsCards } from "@/components/StatsCards";
 import { RecentActivities } from "@/components/RecentActivities";
@@ -13,6 +13,7 @@ import { EmployeeDetailForm } from "@/components/EmployeeDetailForm";
 import { EmployeeProfileView } from "@/components/EmployeeProfileView";
 import { LeaveRequestDetailView } from "@/components/LeaveRequestDetailView";
 import { PayrollDetailView } from "@/components/PayrollDetailView";
+import { SidebarInset } from "@/components/ui/sidebar";
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState("overview");
@@ -106,15 +107,15 @@ const Index = () => {
 
   return (
     <div className="min-h-screen flex w-full bg-gray-50">
-      <Sidebar />
-      <div className="flex-1 flex flex-col">
+      <AppSidebar />
+      <SidebarInset className="flex-1 flex flex-col">
         <Header />
         <div className="flex-1 p-6">
           <div className="max-w-7xl mx-auto">
             {renderMainContent()}
           </div>
         </div>
-      </div>
+      </SidebarInset>
     </div>
   );
 };
