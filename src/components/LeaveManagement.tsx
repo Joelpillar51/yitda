@@ -1,16 +1,29 @@
 import { Search } from "lucide-react";
+import { useState } from "react";
+import { ConfirmationModal } from "./ConfirmationModal";
 
 interface LeaveManagementProps {
   onViewLeaveRequest?: (request: any) => void;
 }
 
 export function LeaveManagement({ onViewLeaveRequest }: LeaveManagementProps) {
+  const [modalState, setModalState] = useState<{
+    isOpen: boolean;
+    type: "approve-leave" | "reject-leave" | null;
+    data?: any;
+  }>({
+    isOpen: false,
+    type: null,
+  });
+
   const leaveRequests = [
     {
       id: 1,
       name: "Amina Ibrahim Bello",
       type: "Annual Leave",
       date: "10-Jun-2025 to 21-Jun-2025",
+      startDate: "June 10, 2025",
+      endDate: "June 21, 2025",
       status: "Approved"
     },
     {
@@ -18,6 +31,8 @@ export function LeaveManagement({ onViewLeaveRequest }: LeaveManagementProps) {
       name: "Sani Musa Abdullahi",
       type: "Casual Leave",
       date: "3-Jun-2025 to 05-Jun-2025",
+      startDate: "June 3, 2025",
+      endDate: "June 5, 2025",
       status: "Approved"
     },
     {
@@ -25,6 +40,8 @@ export function LeaveManagement({ onViewLeaveRequest }: LeaveManagementProps) {
       name: "Hauwa'u Umar Farouk",
       type: "Sick Leave",
       date: "May-2025 to 31-May-2025",
+      startDate: "May 26, 2025",
+      endDate: "May 27, 2025",
       status: "Pending"
     },
     {
@@ -32,6 +49,8 @@ export function LeaveManagement({ onViewLeaveRequest }: LeaveManagementProps) {
       name: "Bashir Lawal Dantata",
       type: "Paternity Leave",
       date: "15-Jun-2025 to 29-Jun-2025",
+      startDate: "June 15, 2025",
+      endDate: "June 29, 2025",
       status: "Approved"
     },
     {
@@ -39,6 +58,8 @@ export function LeaveManagement({ onViewLeaveRequest }: LeaveManagementProps) {
       name: "Zainab Salisu Garba",
       type: "Casual Leave",
       date: "01-Jun-2025",
+      startDate: "June 1, 2025",
+      endDate: "June 1, 2025",
       status: "Rejected"
     },
     {
@@ -46,6 +67,8 @@ export function LeaveManagement({ onViewLeaveRequest }: LeaveManagementProps) {
       name: "Yusuf Abdulkadir Nuhu",
       type: "Annual Leave",
       date: "01-Jul-2025 to 15-Jul-2025",
+      startDate: "July 1, 2025",
+      endDate: "July 15, 2025",
       status: "Approved"
     },
     {
@@ -53,9 +76,34 @@ export function LeaveManagement({ onViewLeaveRequest }: LeaveManagementProps) {
       name: "Maryam Kabir Jibrin",
       type: "Study Leave",
       date: "03-Jun-2025 to 10-Jun-2025",
+      startDate: "June 3, 2025",
+      endDate: "June 10, 2025",
       status: "Approved"
     }
   ];
+
+  const handleApprove = (request: any) => {
+    setModalState({
+      isOpen: true,
+      type: "approve-leave",
+      data: request,
+    });
+  };
+
+  const handleReject = (request: any) => {
+    setModalState({
+      isOpen: true,
+      type: "reject-leave",
+      data: request,
+    });
+  };
+
+  const closeModal = () => {
+    setModalState({
+      isOpen: false,
+      type: null,
+    });
+  };
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -84,87 +132,106 @@ export function LeaveManagement({ onViewLeaveRequest }: LeaveManagementProps) {
   };
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200">
-      <div className="p-6 border-b border-gray-200">
-        <h2 className="text-lg font-semibold text-gray-900">Leave Management</h2>
-      </div>
-      
-      <div className="p-6">
-        <div className="mb-4">
-          <div className="relative max-w-md">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={16} />
-            <input
-              type="text"
-              placeholder="Search"
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent text-sm"
-            />
-          </div>
+    <>
+      <div className="bg-white rounded-lg border border-gray-200">
+        <div className="p-6 border-b border-gray-200">
+          <h2 className="text-lg font-semibold text-gray-900">Leave Management</h2>
         </div>
+        
+        <div className="p-6">
+          <div className="mb-4">
+            <div className="relative max-w-md">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={16} />
+              <input
+                type="text"
+                placeholder="Search"
+                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent text-sm"
+              />
+            </div>
+          </div>
 
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead>
-              <tr className="border-b border-gray-200">
-                <th className="text-left py-3 px-4 font-medium text-gray-500 text-sm">S/N</th>
-                <th className="text-left py-3 px-4 font-medium text-gray-500 text-sm">Name</th>
-                <th className="text-left py-3 px-4 font-medium text-gray-500 text-sm">Type</th>
-                <th className="text-left py-3 px-4 font-medium text-gray-500 text-sm">Date</th>
-                <th className="text-left py-3 px-4 font-medium text-gray-500 text-sm">Status</th>
-                <th className="text-left py-3 px-4 font-medium text-gray-500 text-sm">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {leaveRequests.map((request) => (
-                <tr key={request.id} className="border-b border-gray-100 hover:bg-gray-50">
-                  <td className="py-4 px-4 text-sm text-gray-900">{request.id}</td>
-                  <td className="py-4 px-4 text-sm text-gray-900">{request.name}</td>
-                  <td className="py-4 px-4 text-sm text-gray-600">{request.type}</td>
-                  <td className="py-4 px-4 text-sm text-gray-600">{request.date}</td>
-                  <td className="py-4 px-4 text-sm">
-                    <span className={`px-2 py-1 rounded text-xs font-medium ${getStatusColor(request.status)}`}>
-                      {getStatusIcon(request.status)}{request.status}
-                    </span>
-                  </td>
-                  <td className="py-4 px-4 text-sm">
-                    <div className="flex items-center space-x-2">
-                      {request.status === "Pending" && (
-                        <>
-                          <button className="text-green-600 hover:text-green-700 border border-green-600 px-3 py-1 rounded text-xs font-medium">Approve</button>
-                          <button className="text-red-600 hover:text-red-700 border border-red-600 px-3 py-1 rounded text-xs font-medium">Reject</button>
-                        </>
-                      )}
-                      <button 
-                        onClick={() => onViewLeaveRequest?.(request)}
-                        className="text-gray-600 hover:text-gray-800 font-medium"
-                      >
-                        View
-                      </button>
-                    </div>
-                  </td>
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="border-b border-gray-200">
+                  <th className="text-left py-3 px-4 font-medium text-gray-500 text-sm">S/N</th>
+                  <th className="text-left py-3 px-4 font-medium text-gray-500 text-sm">Name</th>
+                  <th className="text-left py-3 px-4 font-medium text-gray-500 text-sm">Type</th>
+                  <th className="text-left py-3 px-4 font-medium text-gray-500 text-sm">Date</th>
+                  <th className="text-left py-3 px-4 font-medium text-gray-500 text-sm">Status</th>
+                  <th className="text-left py-3 px-4 font-medium text-gray-500 text-sm">Action</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-
-        <div className="flex items-center justify-between mt-6">
-          <button className="flex items-center space-x-2 px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50">
-            <span>← Previous</span>
-          </button>
-          <div className="flex items-center space-x-2">
-            <button className="w-8 h-8 bg-green-600 text-white rounded text-sm font-medium">1</button>
-            <button className="w-8 h-8 text-gray-600 hover:bg-gray-100 rounded text-sm font-medium">2</button>
-            <button className="w-8 h-8 text-gray-600 hover:bg-gray-100 rounded text-sm font-medium">3</button>
-            <span className="text-gray-400">...</span>
-            <button className="w-8 h-8 text-gray-600 hover:bg-gray-100 rounded text-sm font-medium">8</button>
-            <button className="w-8 h-8 text-gray-600 hover:bg-gray-100 rounded text-sm font-medium">9</button>
-            <button className="w-8 h-8 text-gray-600 hover:bg-gray-100 rounded text-sm font-medium">10</button>
+              </thead>
+              <tbody>
+                {leaveRequests.map((request) => (
+                  <tr key={request.id} className="border-b border-gray-100 hover:bg-gray-50">
+                    <td className="py-4 px-4 text-sm text-gray-900">{request.id}</td>
+                    <td className="py-4 px-4 text-sm text-gray-900">{request.name}</td>
+                    <td className="py-4 px-4 text-sm text-gray-600">{request.type}</td>
+                    <td className="py-4 px-4 text-sm text-gray-600">{request.date}</td>
+                    <td className="py-4 px-4 text-sm">
+                      <span className={`px-2 py-1 rounded text-xs font-medium ${getStatusColor(request.status)}`}>
+                        {getStatusIcon(request.status)}{request.status}
+                      </span>
+                    </td>
+                    <td className="py-4 px-4 text-sm">
+                      <div className="flex items-center space-x-2">
+                        {request.status === "Pending" && (
+                          <>
+                            <button 
+                              onClick={() => handleApprove(request)}
+                              className="text-green-600 hover:text-green-700 border border-green-600 px-3 py-1 rounded text-xs font-medium"
+                            >
+                              Approve
+                            </button>
+                            <button 
+                              onClick={() => handleReject(request)}
+                              className="text-red-600 hover:text-red-700 border border-red-600 px-3 py-1 rounded text-xs font-medium"
+                            >
+                              Reject
+                            </button>
+                          </>
+                        )}
+                        <button 
+                          onClick={() => onViewLeaveRequest?.(request)}
+                          className="text-gray-600 hover:text-gray-800 font-medium"
+                        >
+                          View
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
-          <button className="flex items-center space-x-2 px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50">
-            <span>Next →</span>
-          </button>
+
+          <div className="flex items-center justify-between mt-6">
+            <button className="flex items-center space-x-2 px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50">
+              <span>← Previous</span>
+            </button>
+            <div className="flex items-center space-x-2">
+              <button className="w-8 h-8 bg-green-600 text-white rounded text-sm font-medium">1</button>
+              <button className="w-8 h-8 text-gray-600 hover:bg-gray-100 rounded text-sm font-medium">2</button>
+              <button className="w-8 h-8 text-gray-600 hover:bg-gray-100 rounded text-sm font-medium">3</button>
+              <span className="text-gray-400">...</span>
+              <button className="w-8 h-8 text-gray-600 hover:bg-gray-100 rounded text-sm font-medium">8</button>
+              <button className="w-8 h-8 text-gray-600 hover:bg-gray-100 rounded text-sm font-medium">9</button>
+              <button className="w-8 h-8 text-gray-600 hover:bg-gray-100 rounded text-sm font-medium">10</button>
+            </div>
+            <button className="flex items-center space-x-2 px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50">
+              <span>Next →</span>
+            </button>
+          </div>
         </div>
       </div>
-    </div>
+
+      <ConfirmationModal
+        isOpen={modalState.isOpen}
+        onClose={closeModal}
+        type={modalState.type!}
+        data={modalState.data}
+      />
+    </>
   );
 }
