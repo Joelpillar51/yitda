@@ -29,10 +29,11 @@ import {
 interface AppSidebarProps {
   onShowPlanning?: () => void;
   onShowAccounting?: () => void;
+  onShowHR?: () => void;
   currentView?: string;
 }
 
-export function AppSidebar({ onShowPlanning, onShowAccounting, currentView }: AppSidebarProps) {
+export function AppSidebar({ onShowPlanning, onShowAccounting, onShowHR, currentView }: AppSidebarProps) {
   const sidebarItems = [
     { 
       icon: LayoutDashboard, 
@@ -56,8 +57,8 @@ export function AppSidebar({ onShowPlanning, onShowAccounting, currentView }: Ap
     { 
       icon: Users, 
       label: "Human Resources", 
-      active: currentView === "dashboard",
-      onClick: undefined
+      active: currentView === "hr",
+      onClick: onShowHR
     },
     { 
       icon: Calendar, 

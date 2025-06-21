@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { AppSidebar } from "@/components/Sidebar";
 import { Header } from "@/components/Header";
@@ -98,6 +97,10 @@ const Index = () => {
     setCurrentView("accounting");
   };
 
+  const handleShowHR = () => {
+    setCurrentView("hr");
+  };
+
   const renderMainContent = () => {
     // HR Dashboard views
     if (currentView === "employee-form") {
@@ -163,6 +166,17 @@ const Index = () => {
       );
     }
 
+    // HR views
+    if (currentView === "hr") {
+      return (
+        <>
+          <h1 className="text-2xl font-semibold text-gray-900 mb-6">HR Dashboard</h1>
+          <TabNavigation activeTab={activeTab} onTabChange={setActiveTab} />
+          {renderTabContent()}
+        </>
+      );
+    }
+
     // Default dashboard view
     return (
       <>
@@ -210,6 +224,7 @@ const Index = () => {
       <AppSidebar 
         onShowPlanning={handleShowPlanning} 
         onShowAccounting={handleShowAccounting}
+        onShowHR={handleShowHR}
         currentView={currentView} 
       />
       <SidebarInset className="flex-1 flex flex-col">
