@@ -41,7 +41,7 @@ export function AccountingDashboard({ onViewPaymentRequest, onProcessPayment }: 
   const handleProcessPayment = (requestId: string) => {
     setModalData({
       title: "Payment Successfully Processed",
-      message: "The payroll for April 2025 – HR Department has been successfully marked as processed. Disbursement will now proceed according to the payment schedule."
+      message: "The payroll for May 2025 – HR Department has been successfully marked as processed. Disbursement will now proceed according to the payment schedule."
     });
     setShowSuccessModal(true);
     
@@ -142,7 +142,7 @@ export function AccountingDashboard({ onViewPaymentRequest, onProcessPayment }: 
                   </thead>
                   <tbody className="divide-y divide-gray-200">
                     <tr>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">PAY-2024-001</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">PAY-2025-001</td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">Human Resources Department</td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">₦1,800,000</td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">May 26, 2025</td>
@@ -157,7 +157,7 @@ export function AccountingDashboard({ onViewPaymentRequest, onProcessPayment }: 
                         <Button 
                           size="sm" 
                           className="bg-green-600 hover:bg-green-700 text-white"
-                          onClick={() => handleApprove("PAY-2024-001")}
+                          onClick={() => handleApprove("PAY-2025-001")}
                         >
                           Approve
                         </Button>
@@ -200,7 +200,7 @@ export function AccountingDashboard({ onViewPaymentRequest, onProcessPayment }: 
                   </thead>
                   <tbody className="divide-y divide-gray-200">
                     <tr>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">#PY0425-01</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">#PY0525-01</td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">Payroll_May_2025.xlsx</td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">May 25, 2025 – 10:30 AM</td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">May 26, 2025</td>
@@ -212,11 +212,121 @@ export function AccountingDashboard({ onViewPaymentRequest, onProcessPayment }: 
                         <Button 
                           size="sm" 
                           className="bg-green-600 hover:bg-green-700 text-white"
-                          onClick={() => handleProcessPayment("#PY0425-01")}
+                          onClick={() => handleProcessPayment("#PY0525-01")}
                         >
                           Process Payment
                         </Button>
                       </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        );
+
+      case "budget-overview":
+        return (
+          <div className="space-y-6">
+            <h3 className="text-lg font-semibold">Budget Overview</h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="bg-white p-6 rounded-lg border">
+                <h4 className="text-sm font-medium text-gray-600 mb-2">Total Budget</h4>
+                <p className="text-2xl font-bold text-gray-900">₦230M</p>
+                <p className="text-sm text-green-600">+12% from last year</p>
+              </div>
+              <div className="bg-white p-6 rounded-lg border">
+                <h4 className="text-sm font-medium text-gray-600 mb-2">Allocated</h4>
+                <p className="text-2xl font-bold text-gray-900">₦185M</p>
+                <p className="text-sm text-blue-600">80.4% of total</p>
+              </div>
+              <div className="bg-white p-6 rounded-lg border">
+                <h4 className="text-sm font-medium text-gray-600 mb-2">Remaining</h4>
+                <p className="text-2xl font-bold text-gray-900">₦45M</p>
+                <p className="text-sm text-orange-600">19.6% remaining</p>
+              </div>
+            </div>
+          </div>
+        );
+
+      case "transactions":
+        return (
+          <div className="space-y-6">
+            <h3 className="text-lg font-semibold">Recent Transactions</h3>
+            <div className="bg-white rounded-lg border">
+              <div className="p-4 border-b">
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                  <input
+                    type="text"
+                    placeholder="Search transactions"
+                    className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                  />
+                </div>
+              </div>
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead className="bg-gray-50">
+                    <tr>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Transaction ID</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Description</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Amount</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Type</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-200">
+                    <tr>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">TXN-2025-001</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">Staff Salary Payment</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-red-600">-₦1,800,000</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">May 26, 2025</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">Debit</td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <span className="px-2 py-1 text-xs font-medium bg-green-100 text-green-800 rounded-full">Completed</span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        );
+
+      case "audit-trail":
+        return (
+          <div className="space-y-6">
+            <h3 className="text-lg font-semibold">Audit Trail</h3>
+            <div className="bg-white rounded-lg border">
+              <div className="p-4 border-b">
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                  <input
+                    type="text"
+                    placeholder="Search audit logs"
+                    className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                  />
+                </div>
+              </div>
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead className="bg-gray-50">
+                    <tr>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Timestamp</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">User</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Action</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Details</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">IP Address</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-200">
+                    <tr>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">May 26, 2025 10:30 AM</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">admin@yitda.gov.ng</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">Payment Approved</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">PAY-2025-001</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">192.168.1.100</td>
                     </tr>
                   </tbody>
                 </table>
