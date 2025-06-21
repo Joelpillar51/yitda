@@ -13,6 +13,12 @@ import { EmployeeDetailForm } from "@/components/EmployeeDetailForm";
 import { EmployeeProfileView } from "@/components/EmployeeProfileView";
 import { LeaveRequestDetailView } from "@/components/LeaveRequestDetailView";
 import { PayrollDetailView } from "@/components/PayrollDetailView";
+import { PlanningDashboard } from "@/components/PlanningDashboard";
+import { ProjectDetailForm } from "@/components/ProjectDetailForm";
+import { ProjectDetailView } from "@/components/ProjectDetailView";
+import { DocumentUploadForm } from "@/components/DocumentUploadForm";
+import { KPIForm } from "@/components/KPIForm";
+import { KPIDetailView } from "@/components/KPIDetailView";
 import { SidebarInset } from "@/components/ui/sidebar";
 
 const Index = () => {
@@ -20,7 +26,11 @@ const Index = () => {
   const [currentView, setCurrentView] = useState("dashboard");
   const [selectedEmployee, setSelectedEmployee] = useState(null);
   const [selectedLeaveRequest, setSelectedLeaveRequest] = useState(null);
+  const [selectedProject, setSelectedProject] = useState(null);
+  const [selectedDocument, setSelectedDocument] = useState(null);
+  const [selectedKPI, setSelectedKPI] = useState(null);
 
+  // HR Dashboard handlers
   const handleViewEmployee = (employee: any) => {
     setSelectedEmployee(employee);
     setCurrentView("employee-profile");
@@ -40,13 +50,51 @@ const Index = () => {
     setCurrentView("payroll-detail");
   };
 
+  // Planning handlers
+  const handleViewProject = (project: any) => {
+    setSelectedProject(project);
+    setCurrentView("project-detail");
+  };
+
+  const handleAddProject = () => {
+    setSelectedProject(null);
+    setCurrentView("project-form");
+  };
+
+  const handleViewDocument = (document: any) => {
+    setSelectedDocument(document);
+    setCurrentView("document-detail");
+  };
+
+  const handleUploadDocument = () => {
+    setCurrentView("document-upload");
+  };
+
+  const handleViewKPI = (kpi: any) => {
+    setSelectedKPI(kpi);
+    setCurrentView("kpi-detail");
+  };
+
+  const handleAddKPI = () => {
+    setSelectedKPI(null);
+    setCurrentView("kpi-form");
+  };
+
   const handleBackToDashboard = () => {
     setCurrentView("dashboard");
     setSelectedEmployee(null);
     setSelectedLeaveRequest(null);
+    setSelectedProject(null);
+    setSelectedDocument(null);
+    setSelectedKPI(null);
+  };
+
+  const handleShowPlanning = () => {
+    setCurrentView("planning");
   };
 
   const renderMainContent = () => {
+    // HR Dashboard views
     if (currentView === "employee-form") {
       return <EmployeeDetailForm onBack={handleBackToDashboard} employee={selectedEmployee} />;
     }
@@ -61,6 +109,43 @@ const Index = () => {
 
     if (currentView === "payroll-detail") {
       return <PayrollDetailView onBack={handleBackToDashboard} />;
+    }
+
+    // Planning views
+    if (currentView === "planning") {
+      return (
+        <>
+          <h1 className="text-2xl font-semibold text-gray-900 mb-6">Planning</h1>
+          <PlanningDashboard 
+            onViewProject={handleViewProject}
+            onAddProject={handleAddProject}
+            onViewDocument={handleViewDocument}
+            onUploadDocument={handleUploadDocument}
+            onViewKPI={handleViewKPI}
+            onAddKPI={handleAddKPI}
+          />
+        </>
+      );
+    }
+
+    if (currentView === "project-form") {
+      return <ProjectDetailForm onBack={() => setCurrentView("planning")} project={selectedProject} />;
+    }
+
+    if (currentView === "project-detail") {
+      return <ProjectDetailView onBack={() => setCurrentView("planning")} project={selectedProject} />;
+    }
+
+    if (currentView === "document-upload") {
+      return <DocumentUploadForm onBack={() => setCurrentView("planning")} />;
+    }
+
+    if (currentView === "kpi-form") {
+      return <KPIForm onBack={() => setCurrentView("planning")} kpi={selectedKPI} />;
+    }
+
+    if (currentView === "kpi-detail") {
+      return <KPIDetailView onBack={() => setCurrentView("planning")} kpi={selectedKPI} />;
     }
 
     // Default dashboard view
@@ -107,7 +192,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen flex w-full bg-gray-50">
-      <AppSidebar />
+      <AppSidebar onShowPlanning={handleShowPlanning} />
       <SidebarInset className="flex-1 flex flex-col">
         <Header />
         <div className="flex-1 p-6">

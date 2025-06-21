@@ -26,23 +26,27 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 
-const sidebarItems = [
-  { icon: LayoutDashboard, label: "Dashboard", active: true },
-  { icon: Activity, label: "Action Center" },
-  { icon: Building2, label: "Departments", color: "text-green-400" },
-  { icon: Users, label: "Human Resources", active: true, bgColor: "bg-green-600" },
-  { icon: Calendar, label: "Planning" },
-  { icon: Calculator, label: "Accounting" },
-  { icon: Bot, label: "AI & Robotics" },
-  { icon: FileText, label: "Registry" },
-  { icon: Monitor, label: "ICT Solutions" },
-  { icon: Info, label: "Information" },
-  { icon: Database, label: "Data Processing" },
-  { icon: BarChart3, label: "Data Analyst" },
-  { icon: Wrench, label: "Maintenance" },
-];
+interface AppSidebarProps {
+  onShowPlanning?: () => void;
+}
 
-export function AppSidebar() {
+export function AppSidebar({ onShowPlanning }: AppSidebarProps) {
+  const sidebarItems = [
+    { icon: LayoutDashboard, label: "Dashboard", active: true },
+    { icon: Activity, label: "Action Center" },
+    { icon: Building2, label: "Departments", color: "text-green-400" },
+    { icon: Users, label: "Human Resources", active: true, bgColor: "bg-green-600" },
+    { icon: Calendar, label: "Planning", color: "text-green-400", onClick: onShowPlanning },
+    { icon: Calculator, label: "Accounting" },
+    { icon: Bot, label: "AI & Robotics" },
+    { icon: FileText, label: "Registry" },
+    { icon: Monitor, label: "ICT Solutions" },
+    { icon: Info, label: "Information" },
+    { icon: Database, label: "Data Processing" },
+    { icon: BarChart3, label: "Data Analyst" },
+    { icon: Wrench, label: "Maintenance" },
+  ];
+
   return (
     <Sidebar collapsible="none" className="w-64">
       <SidebarContent className="bg-gray-900 text-white">
@@ -72,7 +76,16 @@ export function AppSidebar() {
                         : "text-gray-300 hover:bg-gray-800 hover:text-white"
                     }`}
                   >
-                    <a href="#" className="flex items-center space-x-3 w-full">
+                    <a 
+                      href="#" 
+                      className="flex items-center space-x-3 w-full"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        if (item.onClick) {
+                          item.onClick();
+                        }
+                      }}
+                    >
                       <item.icon size={18} className={item.color || ""} />
                       <span>{item.label}</span>
                     </a>
