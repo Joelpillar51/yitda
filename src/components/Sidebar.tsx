@@ -28,24 +28,92 @@ import {
 
 interface AppSidebarProps {
   onShowPlanning?: () => void;
+  onShowAccounting?: () => void;
   currentView?: string;
 }
 
-export function AppSidebar({ onShowPlanning, currentView }: AppSidebarProps) {
+export function AppSidebar({ onShowPlanning, onShowAccounting, currentView }: AppSidebarProps) {
   const sidebarItems = [
-    { icon: LayoutDashboard, label: "Dashboard", active: currentView === "dashboard" },
-    { icon: Activity, label: "Action Center" },
-    { icon: Building2, label: "Departments", color: "text-green-400" },
-    { icon: Users, label: "Human Resources", active: currentView === "dashboard", bgColor: currentView === "dashboard" ? "bg-green-600" : "" },
-    { icon: Calendar, label: "Planning", color: "text-green-400", onClick: onShowPlanning, active: currentView === "planning", bgColor: currentView === "planning" ? "bg-green-600" : "" },
-    { icon: Calculator, label: "Accounting" },
-    { icon: Bot, label: "AI & Robotics" },
-    { icon: FileText, label: "Registry" },
-    { icon: Monitor, label: "ICT Solutions" },
-    { icon: Info, label: "Information" },
-    { icon: Database, label: "Data Processing" },
-    { icon: BarChart3, label: "Data Analyst" },
-    { icon: Wrench, label: "Maintenance" },
+    { 
+      icon: LayoutDashboard, 
+      label: "Dashboard", 
+      active: currentView === "dashboard",
+      onClick: undefined
+    },
+    { 
+      icon: Activity, 
+      label: "Action Center",
+      active: false,
+      onClick: undefined
+    },
+    { 
+      icon: Building2, 
+      label: "Departments", 
+      color: "text-green-400",
+      active: false,
+      onClick: undefined
+    },
+    { 
+      icon: Users, 
+      label: "Human Resources", 
+      active: currentView === "dashboard",
+      onClick: undefined
+    },
+    { 
+      icon: Calendar, 
+      label: "Planning", 
+      color: "text-green-400", 
+      onClick: onShowPlanning, 
+      active: currentView === "planning"
+    },
+    { 
+      icon: Calculator, 
+      label: "Accounting",
+      active: currentView === "accounting",
+      onClick: onShowAccounting
+    },
+    { 
+      icon: Bot, 
+      label: "AI & Robotics",
+      active: false,
+      onClick: undefined
+    },
+    { 
+      icon: FileText, 
+      label: "Registry",
+      active: false,
+      onClick: undefined
+    },
+    { 
+      icon: Monitor, 
+      label: "ICT Solutions",
+      active: false,
+      onClick: undefined
+    },
+    { 
+      icon: Info, 
+      label: "Information",
+      active: false,
+      onClick: undefined
+    },
+    { 
+      icon: Database, 
+      label: "Data Processing",
+      active: false,
+      onClick: undefined
+    },
+    { 
+      icon: BarChart3, 
+      label: "Data Analyst",
+      active: false,
+      onClick: undefined
+    },
+    { 
+      icon: Wrench, 
+      label: "Maintenance",
+      active: false,
+      onClick: undefined
+    },
   ];
 
   return (
@@ -70,10 +138,8 @@ export function AppSidebar({ onShowPlanning, currentView }: AppSidebarProps) {
                   <SidebarMenuButton
                     asChild
                     className={`flex items-center space-x-3 px-3 py-2 rounded-lg text-sm transition-colors ${
-                      item.bgColor 
-                        ? `${item.bgColor} text-white hover:${item.bgColor}/90`
-                        : item.active 
-                        ? "bg-gray-800 text-white hover:bg-gray-700" 
+                      item.active 
+                        ? "bg-green-600 text-white hover:bg-green-700"
                         : "text-gray-300 hover:bg-gray-800 hover:text-white"
                     }`}
                   >

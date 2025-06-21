@@ -2,6 +2,8 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+import { PlanningSuccessModal } from "@/components/PlanningSuccessModal";
 
 interface KPIFormProps {
   onBack: () => void;
@@ -9,6 +11,8 @@ interface KPIFormProps {
 }
 
 export function KPIForm({ onBack, kpi }: KPIFormProps) {
+  const { toast } = useToast();
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [formData, setFormData] = useState({
     kpiName: kpi?.name || "",
     department: kpi?.department || "",
@@ -30,8 +34,25 @@ export function KPIForm({ onBack, kpi }: KPIFormProps) {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission
     console.log("KPI data:", formData);
+    
+    // Show success modal
+    setShowSuccessModal(true);
+    
+    // Show toast
+    toast({
+      title: "KPI Created Successfully",
+      description: `Your new KPI "${formData.kpiName}" has been successfully created and added to the project. You can now start tracking progress toward your target.`,
+    });
+  };
+
+  const handleModalClose = () => {
+    setShowSuccessModal(false);
+  };
+
+  const handleBackToPlanning = () => {
+    setShowSuccessModal(false);
+    onBack();
   };
 
   return (
@@ -45,7 +66,7 @@ export function KPIForm({ onBack, kpi }: KPIFormProps) {
 
       <div className="bg-white rounded-lg border border-gray-200 p-6">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-xl font-semibold text-gray-900">Document Details</h2>
+          <h2 className="text-xl font-semibold text-gray-900">KPI Details</h2>
           <button className="text-gray-400 hover:text-gray-600">
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
@@ -183,6 +204,14 @@ export function KPIForm({ onBack, kpi }: KPIFormProps) {
           </div>
         </form>
       </div>
+
+      <PlanningSuccessModal
+        isOpen={showSuccessModal}
+        onClose={handleModalClose}
+        title="KPI Created Successfully"
+        message={`Our new KPI "${formData.kpiName}" has been successfully created and added to the project. You can now start tracking progress toward your target.`}
+        onBackToPlanning={handleBackToPlanning}
+      />
     </div>
   );
 }

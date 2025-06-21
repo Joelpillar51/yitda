@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { AppSidebar } from "@/components/Sidebar";
 import { Header } from "@/components/Header";
@@ -13,6 +14,7 @@ import { EmployeeProfileView } from "@/components/EmployeeProfileView";
 import { LeaveRequestDetailView } from "@/components/LeaveRequestDetailView";
 import { PayrollDetailView } from "@/components/PayrollDetailView";
 import { PlanningDashboard } from "@/components/PlanningDashboard";
+import { AccountingDashboard } from "@/components/AccountingDashboard";
 import { ProjectDetailForm } from "@/components/ProjectDetailForm";
 import { ProjectDetailView } from "@/components/ProjectDetailView";
 import { DocumentUploadForm } from "@/components/DocumentUploadForm";
@@ -92,6 +94,10 @@ const Index = () => {
     setCurrentView("planning");
   };
 
+  const handleShowAccounting = () => {
+    setCurrentView("accounting");
+  };
+
   const renderMainContent = () => {
     // HR Dashboard views
     if (currentView === "employee-form") {
@@ -147,6 +153,16 @@ const Index = () => {
       return <KPIDetailView onBack={() => setCurrentView("planning")} kpi={selectedKPI} />;
     }
 
+    // Accounting views
+    if (currentView === "accounting") {
+      return (
+        <>
+          <h1 className="text-2xl font-semibold text-gray-900 mb-6">Accounting</h1>
+          <AccountingDashboard />
+        </>
+      );
+    }
+
     // Default dashboard view
     return (
       <>
@@ -191,7 +207,11 @@ const Index = () => {
 
   return (
     <div className="min-h-screen flex w-full bg-gray-50">
-      <AppSidebar onShowPlanning={handleShowPlanning} currentView={currentView} />
+      <AppSidebar 
+        onShowPlanning={handleShowPlanning} 
+        onShowAccounting={handleShowAccounting}
+        currentView={currentView} 
+      />
       <SidebarInset className="flex-1 flex flex-col">
         <Header />
         <div className="flex-1 p-6">
