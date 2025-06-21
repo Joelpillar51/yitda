@@ -1,10 +1,12 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Search, Plus, FileText } from "lucide-react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
+import { PlanningSuccessModal } from "@/components/PlanningSuccessModal";
+import { PlanningRejectionModal } from "@/components/PlanningRejectionModal";
+import { useToast } from "@/hooks/use-toast";
 
 interface PlanningDashboardProps {
   onViewProject?: (project: any) => void;
@@ -24,6 +26,9 @@ export function PlanningDashboard({
   onAddKPI 
 }: PlanningDashboardProps) {
   const [activeTab, setActiveTab] = useState("strategic-projects");
+  const [successModal, setSuccessModal] = useState({ isOpen: false, title: "", message: "" });
+  const [rejectionModal, setRejectionModal] = useState({ isOpen: false, title: "", message: "", confirmButtonText: "", projectName: "" });
+  const { toast } = useToast();
 
   const strategicProjects = [
     { id: 1, name: "Smart City Initiative", budget: "₦25,000,000", department: "ICT & Planning", status: "Pending", timeline: "Jan-Dec 2025", progress: "0%" },
@@ -54,6 +59,37 @@ export function PlanningDashboard({
     { id: 6, department: "ICT Solutions", assignedKPIs: "6 KPIs", targetTimeline: "Q2 2025", progress: "5/6", status: "On Track" },
     { id: 7, department: "Information & Public Engagement", assignedKPIs: "5 KPIs", targetTimeline: "Q2 2025", progress: "3/5", status: "On Track" },
   ];
+
+  const handleApproveProject = (project: any) => {
+    setSuccessModal({
+      isOpen: true,
+      title: "Project Approved",
+      message: `The ${project.name} has been successfully approved. You can now proceed with the next phase of execution.`
+    });
+  };
+
+  const handleRejectProject = (project: any) => {
+    setRejectionModal({
+      isOpen: true,
+      title: "Project Rejected",
+      message: `The ${project.name} has been rejected. Please review the feedback provided and make the necessary adjustments before resubmission.`,
+      confirmButtonText: "Reject Payroll",
+      projectName: project.name
+    });
+  };
+
+  const handleRejectionConfirm = (reason: string) => {
+    setRejectionModal({ ...rejectionModal, isOpen: false });
+    toast({
+      title: "Project Rejected",
+      description: `${rejectionModal.projectName} has been rejected with reason: ${reason}`,
+      variant: "destructive"
+    });
+  };
+
+  const handleBackToPlanning = () => {
+    setSuccessModal({ ...successModal, isOpen: false });
+  };
 
   const getStatusBadge = (status: string) => {
     switch (status) {
@@ -153,12 +189,22 @@ export function PlanningDashboard({
                             View
                           </Button>
                           {project.status === "Pending" && (
-                            <Button
-                              size="sm"
-                              className="bg-green-600 hover:bg-green-700 text-white"
-                            >
-                              Approve
-                            </Button>
+                            <>
+                              <Button
+                                size="sm"
+                                className="bg-green-600 hover:bg-green-700 text-white"
+                                onClick={() => handleApproveProject(project)}
+                              >
+                                Approve
+                              </Button>
+                              <Button
+                                size="sm"
+                                variant="destructive"
+                                onClick={() => handleRejectProject(project)}
+                              >
+                                Reject
+                              </Button>
+                            </>
                           )}
                         </div>
                       </TableCell>
@@ -387,6 +433,23 @@ export function PlanningDashboard({
       </div>
 
       {renderTabContent()}
+
+      <PlanningSuccessModal
+        isOpen={successModal.isOpen}
+        onClose={() => setSuccessModal({ ...successModal, isOpen: false })}
+        title={successModal.title}
+        message={successModal.message}
+        onBackToPlanning={handleBackToPlanning}
+      />
+
+      <PlanningRejectionModal
+        isOpen={rejectionModal.isOpen}
+        onClose={() => setRejectionModal({ ...rejectionModal, isOpen: false })}
+        title={rejectionModal.title}
+        message={rejectionModal.message}
+        confirmButtonText={rejectionModal.confirmButtonText}
+        onConfirm={handleRejectionConfirm}
+      />
     </div>
   );
 }

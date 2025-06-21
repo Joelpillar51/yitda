@@ -28,15 +28,16 @@ import {
 
 interface AppSidebarProps {
   onShowPlanning?: () => void;
+  currentView?: string;
 }
 
-export function AppSidebar({ onShowPlanning }: AppSidebarProps) {
+export function AppSidebar({ onShowPlanning, currentView }: AppSidebarProps) {
   const sidebarItems = [
-    { icon: LayoutDashboard, label: "Dashboard", active: true },
+    { icon: LayoutDashboard, label: "Dashboard", active: currentView === "dashboard" },
     { icon: Activity, label: "Action Center" },
     { icon: Building2, label: "Departments", color: "text-green-400" },
-    { icon: Users, label: "Human Resources", active: true, bgColor: "bg-green-600" },
-    { icon: Calendar, label: "Planning", color: "text-green-400", onClick: onShowPlanning },
+    { icon: Users, label: "Human Resources", active: currentView === "dashboard", bgColor: currentView === "dashboard" ? "bg-green-600" : "" },
+    { icon: Calendar, label: "Planning", color: "text-green-400", onClick: onShowPlanning, active: currentView === "planning", bgColor: currentView === "planning" ? "bg-green-600" : "" },
     { icon: Calculator, label: "Accounting" },
     { icon: Bot, label: "AI & Robotics" },
     { icon: FileText, label: "Registry" },

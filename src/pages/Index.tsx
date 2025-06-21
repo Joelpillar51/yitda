@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { AppSidebar } from "@/components/Sidebar";
 import { Header } from "@/components/Header";
@@ -192,7 +191,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen flex w-full bg-gray-50">
-      <AppSidebar onShowPlanning={handleShowPlanning} />
+      <AppSidebar onShowPlanning={handleShowPlanning} currentView={currentView} />
       <SidebarInset className="flex-1 flex flex-col">
         <Header />
         <div className="flex-1 p-6">
