@@ -1,4 +1,3 @@
-
 import { 
   LayoutDashboard, 
   Activity, 
@@ -31,10 +30,11 @@ interface AppSidebarProps {
   onShowAccounting?: () => void;
   onShowHR?: () => void;
   onShowActionCenter?: () => void;
+  onShowAIRobotics?: () => void;
   currentView?: string;
 }
 
-export function AppSidebar({ onShowPlanning, onShowAccounting, onShowHR, onShowActionCenter, currentView }: AppSidebarProps) {
+export function AppSidebar({ onShowPlanning, onShowAccounting, onShowHR, onShowActionCenter, onShowAIRobotics, currentView }: AppSidebarProps) {
   const handleDashboardClick = () => {
     // Reset to main dashboard
     window.location.reload();
@@ -82,8 +82,8 @@ export function AppSidebar({ onShowPlanning, onShowAccounting, onShowHR, onShowA
     { 
       icon: Bot, 
       label: "AI & Robotics",
-      active: false,
-      onClick: undefined
+      active: currentView === "ai-robotics",
+      onClick: onShowAIRobotics
     },
     { 
       icon: FileText, 

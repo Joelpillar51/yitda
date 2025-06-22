@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { AppSidebar } from "@/components/Sidebar";
 import { Header } from "@/components/Header";
@@ -23,6 +22,7 @@ import { KPIForm } from "@/components/KPIForm";
 import { KPIDetailView } from "@/components/KPIDetailView";
 import { ActionCenter } from "@/components/ActionCenter";
 import { SidebarInset } from "@/components/ui/sidebar";
+import { AIRobotics } from "@/components/AIRobotics";
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState("overview");
@@ -108,10 +108,19 @@ const Index = () => {
     setCurrentView("action-center");
   };
 
+  const handleShowAIRobotics = () => {
+    setCurrentView("ai-robotics");
+  };
+
   const renderMainContent = () => {
     // Action Center view
     if (currentView === "action-center") {
       return <ActionCenter />;
+    }
+
+    // AI & Robotics view
+    if (currentView === "ai-robotics") {
+      return <AIRobotics />;
     }
 
     // HR Dashboard views
@@ -232,6 +241,7 @@ const Index = () => {
         onShowAccounting={handleShowAccounting}
         onShowHR={handleShowHR}
         onShowActionCenter={handleShowActionCenter}
+        onShowAIRobotics={handleShowAIRobotics}
         currentView={currentView} 
       />
       <SidebarInset className="flex-1 flex flex-col">
