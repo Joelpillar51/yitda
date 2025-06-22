@@ -1,6 +1,6 @@
-
-import { Calendar, Users, FileText, Clock, ChevronRight, Bell } from "lucide-react";
+import { Calendar, Users, FileText, Clock, ChevronRight, Bell, Menu } from "lucide-react";
 import { useState } from "react";
+import { SidebarTrigger } from "@/components/ui/sidebar";
 
 export function Dashboard() {
   const [currentDate] = useState(new Date());
@@ -10,16 +10,22 @@ export function Dashboard() {
       icon: Users,
       value: "125",
       label: "TOTAL STAFF",
+      bgColor: "bg-green-50",
+      iconColor: "text-green-600",
     },
     {
       icon: FileText,
       value: "4",
       label: "ACTIVE PROJECTS",
+      bgColor: "bg-gray-50",
+      iconColor: "text-gray-600",
     },
     {
       icon: Clock,
       value: "5",
       label: "PENDING APPROVALS",
+      bgColor: "bg-yellow-50",
+      iconColor: "text-yellow-600",
     },
   ];
 
@@ -124,17 +130,23 @@ export function Dashboard() {
 
   return (
     <div className="space-y-6">
+      {/* Mobile Header with Sidebar Toggle */}
+      <div className="flex items-center justify-between lg:hidden mb-4">
+        <h1 className="text-xl font-bold text-gray-900">Dashboard</h1>
+        <SidebarTrigger />
+      </div>
+
       {/* Welcome Section */}
-      <div className="bg-gradient-to-r from-green-100 to-green-200 rounded-lg p-6 lg:p-8">
+      <div className="bg-gradient-to-r from-green-100 to-green-200 rounded-lg p-4 lg:p-8">
         <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between">
           <div className="mb-4 lg:mb-0">
-            <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-2">
+            <h1 className="text-xl lg:text-3xl font-bold text-gray-900 mb-2">
               Good Morning, Dr. Adam 👋
             </h1>
-            <p className="text-gray-700 mb-4">
+            <p className="text-sm lg:text-base text-gray-700 mb-4">
               You have 3 approvals pending and 2 departments needing attention.
             </p>
-            <button className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg font-medium transition-colors">
+            <button className="bg-green-600 hover:bg-green-700 text-white px-4 lg:px-6 py-2 rounded-lg font-medium transition-colors text-sm lg:text-base">
               Go to Action Center
             </button>
           </div>
@@ -151,25 +163,23 @@ export function Dashboard() {
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
         {/* Main Content */}
         <div className="xl:col-span-2 space-y-6">
-          {/* Overview Section */}
+          {/* Overview Section - Improved Mobile Layout */}
           <div className="bg-white rounded-lg border border-gray-200">
-            <div className="p-6 border-b border-gray-200 flex items-center justify-between">
+            <div className="p-4 lg:p-6 border-b border-gray-200 flex items-center justify-between">
               <h2 className="text-lg font-semibold text-gray-900">Overview</h2>
               <button className="flex items-center text-sm text-gray-600 hover:text-gray-900">
                 View all <ChevronRight className="w-4 h-4 ml-1" />
               </button>
             </div>
-            <div className="p-6">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="p-4 lg:p-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
                 {overviewStats.map((stat, index) => (
-                  <div key={index} className="text-center">
-                    <div className="flex justify-center mb-3">
-                      <div className="p-3 bg-gray-100 rounded-lg">
-                        <stat.icon className="w-6 h-6 text-gray-600" />
-                      </div>
+                  <div key={index} className="flex flex-col items-center text-center p-4 rounded-lg border border-gray-100 hover:shadow-sm transition-shadow">
+                    <div className={`p-4 rounded-full ${stat.bgColor} mb-4`}>
+                      <stat.icon className={`w-8 h-8 ${stat.iconColor}`} />
                     </div>
-                    <div className="text-3xl font-bold text-gray-900 mb-1">{stat.value}</div>
-                    <div className="text-sm text-gray-500 font-medium">{stat.label}</div>
+                    <div className="text-3xl lg:text-4xl font-bold text-gray-900 mb-2">{stat.value}</div>
+                    <div className="text-xs lg:text-sm text-gray-500 font-medium uppercase tracking-wide">{stat.label}</div>
                   </div>
                 ))}
               </div>
@@ -178,7 +188,7 @@ export function Dashboard() {
 
           {/* Recent Requests */}
           <div className="bg-white rounded-lg border border-gray-200">
-            <div className="p-6 border-b border-gray-200 flex items-center justify-between">
+            <div className="p-4 lg:p-6 border-b border-gray-200 flex items-center justify-between">
               <h2 className="text-lg font-semibold text-gray-900">Recent Request</h2>
               <button className="flex items-center text-sm text-gray-600 hover:text-gray-900">
                 View all <ChevronRight className="w-4 h-4 ml-1" />
@@ -188,27 +198,27 @@ export function Dashboard() {
               <table className="w-full">
                 <thead className="bg-gray-50">
                   <tr>
-                    <th className="text-left py-3 px-6 font-medium text-gray-500 text-sm">S/N</th>
-                    <th className="text-left py-3 px-6 font-medium text-gray-500 text-sm">Request Title</th>
-                    <th className="text-left py-3 px-6 font-medium text-gray-500 text-sm">Department</th>
-                    <th className="text-left py-3 px-6 font-medium text-gray-500 text-sm">Date Created</th>
-                    <th className="text-left py-3 px-6 font-medium text-gray-500 text-sm">Priority</th>
-                    <th className="text-left py-3 px-6 font-medium text-gray-500 text-sm">Action</th>
+                    <th className="text-left py-3 px-4 lg:px-6 font-medium text-gray-500 text-sm">S/N</th>
+                    <th className="text-left py-3 px-4 lg:px-6 font-medium text-gray-500 text-sm">Request Title</th>
+                    <th className="text-left py-3 px-4 lg:px-6 font-medium text-gray-500 text-sm hidden sm:table-cell">Department</th>
+                    <th className="text-left py-3 px-4 lg:px-6 font-medium text-gray-500 text-sm hidden md:table-cell">Date Created</th>
+                    <th className="text-left py-3 px-4 lg:px-6 font-medium text-gray-500 text-sm">Priority</th>
+                    <th className="text-left py-3 px-4 lg:px-6 font-medium text-gray-500 text-sm">Action</th>
                   </tr>
                 </thead>
                 <tbody>
                   {recentRequests.map((request) => (
                     <tr key={request.id} className="border-b border-gray-100 hover:bg-gray-50">
-                      <td className="py-4 px-6 text-sm text-gray-900">{request.id}</td>
-                      <td className="py-4 px-6 text-sm text-gray-900">{request.title}</td>
-                      <td className="py-4 px-6 text-sm text-gray-600">{request.department}</td>
-                      <td className="py-4 px-6 text-sm text-gray-600">{request.dateCreated}</td>
-                      <td className="py-4 px-6">
+                      <td className="py-4 px-4 lg:px-6 text-sm text-gray-900">{request.id}</td>
+                      <td className="py-4 px-4 lg:px-6 text-sm text-gray-900">{request.title}</td>
+                      <td className="py-4 px-4 lg:px-6 text-sm text-gray-600 hidden sm:table-cell">{request.department}</td>
+                      <td className="py-4 px-4 lg:px-6 text-sm text-gray-600 hidden md:table-cell">{request.dateCreated}</td>
+                      <td className="py-4 px-4 lg:px-6">
                         <span className={`text-sm font-medium ${request.priorityColor}`}>
                           • {request.priority}
                         </span>
                       </td>
-                      <td className="py-4 px-6">
+                      <td className="py-4 px-4 lg:px-6">
                         <button className="text-sm text-blue-600 hover:text-blue-800">View</button>
                       </td>
                     </tr>
@@ -222,7 +232,7 @@ export function Dashboard() {
         {/* Right Sidebar */}
         <div className="space-y-6">
           {/* Calendar */}
-          <div className="bg-white rounded-lg border border-gray-200 p-6">
+          <div className="bg-white rounded-lg border border-gray-200 p-4 lg:p-6">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-semibold text-gray-900">Calendar</h3>
               <ChevronRight className="w-5 h-5 text-gray-400" />
@@ -256,7 +266,7 @@ export function Dashboard() {
           </div>
 
           {/* Upcoming Events */}
-          <div className="bg-white rounded-lg border border-gray-200 p-6">
+          <div className="bg-white rounded-lg border border-gray-200 p-4 lg:p-6">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-semibold text-gray-900">Upcoming events</h3>
               <button className="flex items-center text-sm text-gray-600 hover:text-gray-900">
