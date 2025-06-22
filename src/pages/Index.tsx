@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { AppSidebar } from "@/components/Sidebar";
 import { Header } from "@/components/Header";
+import { Dashboard } from "@/components/Dashboard";
 import { StatsCards } from "@/components/StatsCards";
 import { RecentActivities } from "@/components/RecentActivities";
 import { TabNavigation } from "@/components/TabNavigation";
@@ -177,14 +178,8 @@ const Index = () => {
       );
     }
 
-    // Default dashboard view
-    return (
-      <>
-        <h1 className="text-2xl font-semibold text-gray-900 mb-6">HR Dashboard</h1>
-        <TabNavigation activeTab={activeTab} onTabChange={setActiveTab} />
-        {renderTabContent()}
-      </>
-    );
+    // Default dashboard view - show the new Dashboard component
+    return <Dashboard />;
   };
 
   const renderTabContent = () => {
@@ -229,7 +224,7 @@ const Index = () => {
       />
       <SidebarInset className="flex-1 flex flex-col">
         <Header />
-        <div className="flex-1 p-6">
+        <div className="flex-1 p-4 lg:p-6">
           <div className="max-w-7xl mx-auto">
             {renderMainContent()}
           </div>

@@ -34,12 +34,17 @@ interface AppSidebarProps {
 }
 
 export function AppSidebar({ onShowPlanning, onShowAccounting, onShowHR, currentView }: AppSidebarProps) {
+  const handleDashboardClick = () => {
+    // Reset to main dashboard
+    window.location.reload();
+  };
+
   const sidebarItems = [
     { 
       icon: LayoutDashboard, 
       label: "Dashboard", 
       active: currentView === "dashboard",
-      onClick: undefined
+      onClick: handleDashboardClick
     },
     { 
       icon: Activity, 
@@ -118,7 +123,7 @@ export function AppSidebar({ onShowPlanning, onShowAccounting, onShowHR, current
   ];
 
   return (
-    <Sidebar collapsible="none" className="w-64">
+    <Sidebar collapsible="icon" className="w-64">
       <SidebarContent className="bg-gray-900 text-white">
         {/* Logo */}
         <div className="p-6 border-b border-gray-700">
@@ -126,7 +131,7 @@ export function AppSidebar({ onShowPlanning, onShowAccounting, onShowHR, current
             <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
               <span className="text-white font-bold text-sm">Y</span>
             </div>
-            <span className="text-white font-bold text-lg">YITDA</span>
+            <span className="text-white font-bold text-lg group-data-[collapsible=icon]:hidden">YITDA</span>
           </div>
         </div>
 
@@ -155,7 +160,7 @@ export function AppSidebar({ onShowPlanning, onShowAccounting, onShowHR, current
                       }}
                     >
                       <item.icon size={18} className={item.color || ""} />
-                      <span>{item.label}</span>
+                      <span className="group-data-[collapsible=icon]:hidden">{item.label}</span>
                     </a>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -167,7 +172,7 @@ export function AppSidebar({ onShowPlanning, onShowAccounting, onShowHR, current
 
       {/* Account Section */}
       <SidebarFooter className="p-4 border-t border-gray-700 bg-gray-900">
-        <div className="text-green-400 text-xs font-semibold mb-2 uppercase tracking-wide">
+        <div className="text-green-400 text-xs font-semibold mb-2 uppercase tracking-wide group-data-[collapsible=icon]:hidden">
           Your Account
         </div>
         <SidebarMenu>
@@ -178,7 +183,7 @@ export function AppSidebar({ onShowPlanning, onShowAccounting, onShowHR, current
             >
               <a href="#" className="flex items-center space-x-3 w-full">
                 <Settings size={18} />
-                <span>Settings</span>
+                <span className="group-data-[collapsible=icon]:hidden">Settings</span>
               </a>
             </SidebarMenuButton>
           </SidebarMenuItem>
