@@ -1,3 +1,4 @@
+
 import { 
   LayoutDashboard, 
   Activity, 
@@ -31,10 +32,11 @@ interface AppSidebarProps {
   onShowHR?: () => void;
   onShowActionCenter?: () => void;
   onShowAIRobotics?: () => void;
+  onShowRegistry?: () => void;
   currentView?: string;
 }
 
-export function AppSidebar({ onShowPlanning, onShowAccounting, onShowHR, onShowActionCenter, onShowAIRobotics, currentView }: AppSidebarProps) {
+export function AppSidebar({ onShowPlanning, onShowAccounting, onShowHR, onShowActionCenter, onShowAIRobotics, onShowRegistry, currentView }: AppSidebarProps) {
   const handleDashboardClick = () => {
     // Reset to main dashboard
     window.location.reload();
@@ -88,8 +90,8 @@ export function AppSidebar({ onShowPlanning, onShowAccounting, onShowHR, onShowA
     { 
       icon: FileText, 
       label: "Registry",
-      active: false,
-      onClick: undefined
+      active: currentView === "registry",
+      onClick: onShowRegistry
     },
     { 
       icon: Monitor, 
