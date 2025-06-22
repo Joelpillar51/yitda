@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { AppSidebar } from "@/components/Sidebar";
 import { Header } from "@/components/Header";
@@ -20,6 +21,7 @@ import { ProjectDetailView } from "@/components/ProjectDetailView";
 import { DocumentUploadForm } from "@/components/DocumentUploadForm";
 import { KPIForm } from "@/components/KPIForm";
 import { KPIDetailView } from "@/components/KPIDetailView";
+import { ActionCenter } from "@/components/ActionCenter";
 import { SidebarInset } from "@/components/ui/sidebar";
 
 const Index = () => {
@@ -102,7 +104,16 @@ const Index = () => {
     setCurrentView("hr");
   };
 
+  const handleShowActionCenter = () => {
+    setCurrentView("action-center");
+  };
+
   const renderMainContent = () => {
+    // Action Center view
+    if (currentView === "action-center") {
+      return <ActionCenter />;
+    }
+
     // HR Dashboard views
     if (currentView === "employee-form") {
       return <EmployeeDetailForm onBack={handleBackToDashboard} employee={selectedEmployee} />;
@@ -220,6 +231,7 @@ const Index = () => {
         onShowPlanning={handleShowPlanning} 
         onShowAccounting={handleShowAccounting}
         onShowHR={handleShowHR}
+        onShowActionCenter={handleShowActionCenter}
         currentView={currentView} 
       />
       <SidebarInset className="flex-1 flex flex-col">

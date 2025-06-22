@@ -30,10 +30,11 @@ interface AppSidebarProps {
   onShowPlanning?: () => void;
   onShowAccounting?: () => void;
   onShowHR?: () => void;
+  onShowActionCenter?: () => void;
   currentView?: string;
 }
 
-export function AppSidebar({ onShowPlanning, onShowAccounting, onShowHR, currentView }: AppSidebarProps) {
+export function AppSidebar({ onShowPlanning, onShowAccounting, onShowHR, onShowActionCenter, currentView }: AppSidebarProps) {
   const handleDashboardClick = () => {
     // Reset to main dashboard
     window.location.reload();
@@ -49,8 +50,8 @@ export function AppSidebar({ onShowPlanning, onShowAccounting, onShowHR, current
     { 
       icon: Activity, 
       label: "Action Center",
-      active: false,
-      onClick: undefined
+      active: currentView === "action-center",
+      onClick: onShowActionCenter
     },
     { 
       icon: Building2, 
