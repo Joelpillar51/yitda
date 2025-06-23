@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -19,6 +18,10 @@ import {
   Download
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import AssignTechnicianModal from "./AssignTechnicianModal";
+import AssignAssetModal from "./AssignAssetModal";
+import TicketResolutionModal from "./TicketResolutionModal";
+import AssetAssignmentSuccessModal from "./AssetAssignmentSuccessModal";
 
 const ICTSolutions = () => {
   const [activeTab, setActiveTab] = useState("overview");
@@ -26,6 +29,11 @@ const ICTSolutions = () => {
   const [expandedTicket, setExpandedTicket] = useState(null);
   const [showTicketDetails, setShowTicketDetails] = useState(false);
   const [selectedTicket, setSelectedTicket] = useState(null);
+  const [showAssignTechnicianModal, setShowAssignTechnicianModal] = useState(false);
+  const [showAssignAssetModal, setShowAssignAssetModal] = useState(false);
+  const [showTicketResolutionModal, setShowTicketResolutionModal] = useState(false);
+  const [showAssetSuccessModal, setShowAssetSuccessModal] = useState(false);
+  const [selectedAsset, setSelectedAsset] = useState(null);
   const { toast } = useToast();
 
   // Mock data for statistics
@@ -237,31 +245,37 @@ const ICTSolutions = () => {
     setShowTicketDetails(true);
   };
 
-  const handleAssignTicket = (ticketId) => {
-    if (ticketId === "#T-00124") {
-      toast({
-        title: "Ticket assigned to Sani Abubakar",
-        description: "The technician has been notified and the assignment logged.",
-      });
-    } else {
-      toast({
-        title: "Ticket assigned successfully",
-        description: "The technician has been notified.",
-      });
-    }
+  const handleAssignTicket = (ticket) => {
+    setSelectedTicket(ticket);
+    setShowAssignTechnicianModal(true);
   };
 
-  const handleResolveTicket = (ticketId) => {
+  const handleAssignAsset = (asset) => {
+    setSelectedAsset(asset);
+    setShowAssignAssetModal(true);
+  };
+
+  const handleResolveTicket = (ticket) => {
+    setSelectedTicket(ticket);
+    setShowTicketResolutionModal(true);
+  };
+
+  const handleTechnicianAssignment = (department, technician) => {
     toast({
-      title: `Ticket ${ticketId} marked as resolved`,
-      description: "A notification has been sent to the requester and ICT logs have been updated.",
+      title: `Ticket assigned to ${technician}`,
+      description: "The technician has been notified and the assignment logged.",
     });
   };
 
-  const handleAssignAsset = (assetName) => {
+  const handleAssetAssignment = (department, staff) => {
+    setShowAssetSuccessModal(true);
+  };
+
+  const handleTicketResolution = () => {
+    setShowTicketResolutionModal(false);
     toast({
-      title: `${assetName} assigned successfully`,
-      description: "Asset assignment has been logged in the system.",
+      title: `Ticket ${selectedTicket?.id} marked as resolved`,
+      description: "A notification has been sent to the requester and ICT logs have been updated.",
     });
   };
 
@@ -274,16 +288,18 @@ const ICTSolutions = () => {
   };
 
   const handleAssignTechnician = () => {
-    toast({
-      title: "Technician assigned successfully",
-      description: "Sani A. has been assigned to this ticket and notified.",
-    });
+    setShowAssignTechnicianModal(true);
   };
 
   const handleReassignTechnician = () => {
+    setShowAssignTechnicianModal(true);
+  };
+
+  const handleViewAssetRecord = () => {
+    setShowAssetSuccessModal(false);
     toast({
-      title: "Technician reassigned successfully",
-      description: "The ticket has been reassigned to a different technician.",
+      title: "Redirecting to asset record",
+      description: "Opening detailed asset information.",
     });
   };
 
@@ -480,466 +496,497 @@ const ICTSolutions = () => {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center space-x-4 mb-6">
-        <Button
-          variant="ghost"
-          onClick={() => window.location.reload()}
-          className="p-2"
-        >
-          <ChevronLeft className="h-4 w-4" />
-          Back to ICT Solutions
-        </Button>
-      </div>
+    <>
+      <div className="space-y-6">
+        <div className="flex items-center space-x-4 mb-6">
+          <Button
+            variant="ghost"
+            onClick={() => window.location.reload()}
+            className="p-2"
+          >
+            <ChevronLeft className="h-4 w-4" />
+            Back to ICT Solutions
+          </Button>
+        </div>
 
-      <h1 className="text-2xl font-semibold text-gray-900">ICT Solutions</h1>
+        <h1 className="text-2xl font-semibold text-gray-900">ICT Solutions</h1>
 
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="overview" className="data-[state=active]:bg-green-100 data-[state=active]:text-green-700">
-            Overview
-          </TabsTrigger>
-          <TabsTrigger value="help-support" className="data-[state=active]:bg-green-100 data-[state=active]:text-green-700">
-            IT Help/Support
-          </TabsTrigger>
-          <TabsTrigger value="asset-inventory" className="data-[state=active]:bg-green-100 data-[state=active]:text-green-700">
-            IT Asset Inventory
-          </TabsTrigger>
-          <TabsTrigger value="software-deployment" className="data-[state=active]:bg-green-100 data-[state=active]:text-green-700">
-            Software Deployment
-          </TabsTrigger>
-        </TabsList>
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <TabsList className="grid w-full grid-cols-4">
+            <TabsTrigger value="overview" className="data-[state=active]:bg-green-100 data-[state=active]:text-green-700">
+              Overview
+            </TabsTrigger>
+            <TabsTrigger value="help-support" className="data-[state=active]:bg-green-100 data-[state=active]:text-green-700">
+              IT Help/Support
+            </TabsTrigger>
+            <TabsTrigger value="asset-inventory" className="data-[state=active]:bg-green-100 data-[state=active]:text-green-700">
+              IT Asset Inventory
+            </TabsTrigger>
+            <TabsTrigger value="software-deployment" className="data-[state=active]:bg-green-100 data-[state=active]:text-green-700">
+              Software Deployment
+            </TabsTrigger>
+          </TabsList>
 
-        <TabsContent value="overview" className="mt-6 space-y-6">
-          {/* Statistics Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {stats.map((stat, index) => (
-              <div key={index} className={`${stat.bgColor} rounded-lg p-6 border border-gray-200`}>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-2xl font-bold text-gray-900">{stat.value}</p>
-                    <p className="text-sm text-gray-600 mt-1">{stat.label}</p>
+          <TabsContent value="overview" className="mt-6 space-y-6">
+            {/* Statistics Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {stats.map((stat, index) => (
+                <div key={index} className={`${stat.bgColor} rounded-lg p-6 border border-gray-200`}>
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-2xl font-bold text-gray-900">{stat.value}</p>
+                      <p className="text-sm text-gray-600 mt-1">{stat.label}</p>
+                    </div>
+                    <stat.icon className={`h-8 w-8 ${stat.color}`} />
                   </div>
-                  <stat.icon className={`h-8 w-8 ${stat.color}`} />
+                </div>
+              ))}
+            </div>
+
+            {/* Recent Tickets */}
+            <div className="bg-white rounded-lg border border-gray-200">
+              <div className="p-6 border-b border-gray-200">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">Recent Tickets</h3>
+                
+                <div className="relative mb-4">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+                  <Input
+                    placeholder="Search"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="pl-10"
+                  />
                 </div>
               </div>
-            ))}
-          </div>
 
-          {/* Recent Tickets */}
-          <div className="bg-white rounded-lg border border-gray-200">
-            <div className="p-6 border-b border-gray-200">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Recent Tickets</h3>
-              
-              <div className="relative mb-4">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-                <Input
-                  placeholder="Search"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10"
-                />
+              <div className="overflow-x-auto">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Ticket</TableHead>
+                      <TableHead>Issue Title / Subject</TableHead>
+                      <TableHead>Department</TableHead>
+                      <TableHead>Status</TableHead>
+                      <TableHead>Priority</TableHead>
+                      <TableHead>Assigned to</TableHead>
+                      <TableHead className="text-right">Actions</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {filteredTickets.map((ticket) => (
+                      <TableRow key={ticket.id}>
+                        <TableCell className="font-medium">{ticket.id}</TableCell>
+                        <TableCell>{ticket.title}</TableCell>
+                        <TableCell>{ticket.department}</TableCell>
+                        <TableCell>{getStatusBadge(ticket.status)}</TableCell>
+                        <TableCell>{getPriorityBadge(ticket.priority)}</TableCell>
+                        <TableCell>{ticket.assignedTo}</TableCell>
+                        <TableCell className="text-right">
+                          <div className="flex justify-end space-x-2">
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => handleViewTicket(ticket)}
+                            >
+                              View
+                            </Button>
+                            {ticket.assignedTo === "—" ? (
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                className="text-green-600 border-green-600 hover:bg-green-50"
+                                onClick={() => handleAssignTicket(ticket)}
+                              >
+                                Assign
+                              </Button>
+                            ) : ticket.status !== "Resolved" ? (
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                className="text-green-600 border-green-600 hover:bg-green-50"
+                                onClick={() => handleResolveTicket(ticket)}
+                              >
+                                Resolve
+                              </Button>
+                            ) : null}
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+
+              <div className="p-4 border-t border-gray-200">
+                <Pagination>
+                  <PaginationContent>
+                    <PaginationItem>
+                      <PaginationPrevious href="#" />
+                    </PaginationItem>
+                    <PaginationItem>
+                      <PaginationLink href="#" isActive>1</PaginationLink>
+                    </PaginationItem>
+                    <PaginationItem>
+                      <PaginationLink href="#">2</PaginationLink>
+                    </PaginationItem>
+                    <PaginationItem>
+                      <PaginationLink href="#">3</PaginationLink>
+                    </PaginationItem>
+                    <PaginationItem>
+                      <span className="px-3 py-2">...</span>
+                    </PaginationItem>
+                    <PaginationItem>
+                      <PaginationLink href="#">8</PaginationLink>
+                    </PaginationItem>
+                    <PaginationItem>
+                      <PaginationLink href="#">9</PaginationLink>
+                    </PaginationItem>
+                    <PaginationItem>
+                      <PaginationLink href="#">10</PaginationLink>
+                    </PaginationItem>
+                    <PaginationItem>
+                      <PaginationNext href="#" />
+                    </PaginationItem>
+                  </PaginationContent>
+                </Pagination>
               </div>
             </div>
+          </TabsContent>
 
-            <div className="overflow-x-auto">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Ticket</TableHead>
-                    <TableHead>Issue Title / Subject</TableHead>
-                    <TableHead>Department</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Priority</TableHead>
-                    <TableHead>Assigned to</TableHead>
-                    <TableHead className="text-right">Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {filteredTickets.map((ticket) => (
-                    <TableRow key={ticket.id}>
-                      <TableCell className="font-medium">{ticket.id}</TableCell>
-                      <TableCell>{ticket.title}</TableCell>
-                      <TableCell>{ticket.department}</TableCell>
-                      <TableCell>{getStatusBadge(ticket.status)}</TableCell>
-                      <TableCell>{getPriorityBadge(ticket.priority)}</TableCell>
-                      <TableCell>{ticket.assignedTo}</TableCell>
-                      <TableCell className="text-right">
-                        <div className="flex justify-end space-x-2">
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => handleViewTicket(ticket)}
-                          >
-                            View
-                          </Button>
-                          {ticket.assignedTo === "—" ? (
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              className="text-green-600 border-green-600 hover:bg-green-50"
-                              onClick={() => handleAssignTicket(ticket.id)}
-                            >
-                              Assign
-                            </Button>
-                          ) : ticket.status !== "Resolved" ? (
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              className="text-green-600 border-green-600 hover:bg-green-50"
-                              onClick={() => handleResolveTicket(ticket.id)}
-                            >
-                              Resolve
-                            </Button>
-                          ) : null}
-                        </div>
-                      </TableCell>
+          <TabsContent value="help-support" className="mt-6">
+            <div className="bg-white rounded-lg border border-gray-200">
+              <div className="p-6 border-b border-gray-200">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">IT Help/Support</h3>
+                
+                <div className="relative mb-4">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+                  <Input
+                    placeholder="Search"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="pl-10"
+                  />
+                </div>
+              </div>
+
+              <div className="overflow-x-auto">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Ticket</TableHead>
+                      <TableHead>Issue Title / Subject</TableHead>
+                      <TableHead>Department</TableHead>
+                      <TableHead>Status</TableHead>
+                      <TableHead>Priority</TableHead>
+                      <TableHead>Assigned to</TableHead>
+                      <TableHead className="text-right">Actions</TableHead>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
+                  </TableHeader>
+                  <TableBody>
+                    {filteredTickets.map((ticket) => (
+                      <TableRow key={ticket.id}>
+                        <TableCell className="font-medium">{ticket.id}</TableCell>
+                        <TableCell>{ticket.title}</TableCell>
+                        <TableCell>{ticket.department}</TableCell>
+                        <TableCell>{getStatusBadge(ticket.status)}</TableCell>
+                        <TableCell>{getPriorityBadge(ticket.priority)}</TableCell>
+                        <TableCell>{ticket.assignedTo}</TableCell>
+                        <TableCell className="text-right">
+                          <div className="flex justify-end space-x-2">
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => handleViewTicket(ticket)}
+                            >
+                              View
+                            </Button>
+                            {ticket.assignedTo === "—" ? (
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                className="text-green-600 border-green-600 hover:bg-green-50"
+                                onClick={() => handleAssignTicket(ticket)}
+                              >
+                                Assign
+                              </Button>
+                            ) : ticket.status === "In Progress" ? (
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                className="text-green-600 border-green-600 hover:bg-green-50"
+                                onClick={() => handleResolveTicket(ticket)}
+                              >
+                                Resolve
+                              </Button>
+                            ) : null}
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
 
-            <div className="p-4 border-t border-gray-200">
-              <Pagination>
-                <PaginationContent>
-                  <PaginationItem>
-                    <PaginationPrevious href="#" />
-                  </PaginationItem>
-                  <PaginationItem>
-                    <PaginationLink href="#" isActive>1</PaginationLink>
-                  </PaginationItem>
-                  <PaginationItem>
-                    <PaginationLink href="#">2</PaginationLink>
-                  </PaginationItem>
-                  <PaginationItem>
-                    <PaginationLink href="#">3</PaginationLink>
-                  </PaginationItem>
-                  <PaginationItem>
-                    <span className="px-3 py-2">...</span>
-                  </PaginationItem>
-                  <PaginationItem>
-                    <PaginationLink href="#">8</PaginationLink>
-                  </PaginationItem>
-                  <PaginationItem>
-                    <PaginationLink href="#">9</PaginationLink>
-                  </PaginationItem>
-                  <PaginationItem>
-                    <PaginationLink href="#">10</PaginationLink>
-                  </PaginationItem>
-                  <PaginationItem>
-                    <PaginationNext href="#" />
-                  </PaginationItem>
-                </PaginationContent>
-              </Pagination>
-            </div>
-          </div>
-        </TabsContent>
-
-        <TabsContent value="help-support" className="mt-6">
-          <div className="bg-white rounded-lg border border-gray-200">
-            <div className="p-6 border-b border-gray-200">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">IT Help/Support</h3>
-              
-              <div className="relative mb-4">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-                <Input
-                  placeholder="Search"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10"
-                />
+              <div className="p-4 border-t border-gray-200">
+                <Pagination>
+                  <PaginationContent>
+                    <PaginationItem>
+                      <PaginationPrevious href="#" />
+                    </PaginationItem>
+                    <PaginationItem>
+                      <PaginationLink href="#" isActive>1</PaginationLink>
+                    </PaginationItem>
+                    <PaginationItem>
+                      <PaginationLink href="#">2</PaginationLink>
+                    </PaginationItem>
+                    <PaginationItem>
+                      <PaginationLink href="#">3</PaginationLink>
+                    </PaginationItem>
+                    <PaginationItem>
+                      <span className="px-3 py-2">...</span>
+                    </PaginationItem>
+                    <PaginationItem>
+                      <PaginationLink href="#">8</PaginationLink>
+                    </PaginationItem>
+                    <PaginationItem>
+                      <PaginationLink href="#">9</PaginationLink>
+                    </PaginationItem>
+                    <PaginationItem>
+                      <PaginationLink href="#">10</PaginationLink>
+                    </PaginationItem>
+                    <PaginationItem>
+                      <PaginationNext href="#" />
+                    </PaginationItem>
+                  </PaginationContent>
+                </Pagination>
               </div>
             </div>
+          </TabsContent>
 
-            <div className="overflow-x-auto">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Ticket</TableHead>
-                    <TableHead>Issue Title / Subject</TableHead>
-                    <TableHead>Department</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Priority</TableHead>
-                    <TableHead>Assigned to</TableHead>
-                    <TableHead className="text-right">Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {filteredTickets.map((ticket) => (
-                    <TableRow key={ticket.id}>
-                      <TableCell className="font-medium">{ticket.id}</TableCell>
-                      <TableCell>{ticket.title}</TableCell>
-                      <TableCell>{ticket.department}</TableCell>
-                      <TableCell>{getStatusBadge(ticket.status)}</TableCell>
-                      <TableCell>{getPriorityBadge(ticket.priority)}</TableCell>
-                      <TableCell>{ticket.assignedTo}</TableCell>
-                      <TableCell className="text-right">
-                        <div className="flex justify-end space-x-2">
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => handleViewTicket(ticket)}
-                          >
-                            View
-                          </Button>
-                          {ticket.assignedTo === "—" ? (
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              className="text-green-600 border-green-600 hover:bg-green-50"
-                              onClick={() => handleAssignTicket(ticket.id)}
-                            >
-                              Assign
-                            </Button>
-                          ) : ticket.status === "In Progress" ? (
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              className="text-green-600 border-green-600 hover:bg-green-50"
-                              onClick={() => handleResolveTicket(ticket.id)}
-                            >
-                              Resolve
-                            </Button>
-                          ) : null}
-                        </div>
-                      </TableCell>
+          <TabsContent value="asset-inventory" className="mt-6">
+            <div className="bg-white rounded-lg border border-gray-200">
+              <div className="p-6 border-b border-gray-200">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">IT Asset Inventory</h3>
+                
+                <div className="relative mb-4">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+                  <Input
+                    placeholder="Search"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="pl-10"
+                  />
+                </div>
+              </div>
+
+              <div className="overflow-x-auto">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Asset Name</TableHead>
+                      <TableHead>Type</TableHead>
+                      <TableHead>Assigned To</TableHead>
+                      <TableHead>Department</TableHead>
+                      <TableHead>Status</TableHead>
+                      <TableHead>Condition</TableHead>
+                      <TableHead className="text-right">Actions</TableHead>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
+                  </TableHeader>
+                  <TableBody>
+                    {filteredAssets.map((asset, index) => (
+                      <TableRow key={index}>
+                        <TableCell className="font-medium">{asset.name}</TableCell>
+                        <TableCell>{asset.type}</TableCell>
+                        <TableCell>{asset.assignedTo}</TableCell>
+                        <TableCell>{asset.department}</TableCell>
+                        <TableCell>{getStatusBadge(asset.status)}</TableCell>
+                        <TableCell>{getConditionBadge(asset.condition)}</TableCell>
+                        <TableCell className="text-right">
+                          <div className="flex justify-end space-x-2">
+                            <Button variant="outline" size="sm">
+                              View
+                            </Button>
+                            {asset.status === "Available" && (
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                className="text-green-600 border-green-600 hover:bg-green-50"
+                                onClick={() => handleAssignAsset(asset)}
+                              >
+                                Assign
+                              </Button>
+                            )}
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
 
-            <div className="p-4 border-t border-gray-200">
-              <Pagination>
-                <PaginationContent>
-                  <PaginationItem>
-                    <PaginationPrevious href="#" />
-                  </PaginationItem>
-                  <PaginationItem>
-                    <PaginationLink href="#" isActive>1</PaginationLink>
-                  </PaginationItem>
-                  <PaginationItem>
-                    <PaginationLink href="#">2</PaginationLink>
-                  </PaginationItem>
-                  <PaginationItem>
-                    <PaginationLink href="#">3</PaginationLink>
-                  </PaginationItem>
-                  <PaginationItem>
-                    <span className="px-3 py-2">...</span>
-                  </PaginationItem>
-                  <PaginationItem>
-                    <PaginationLink href="#">8</PaginationLink>
-                  </PaginationItem>
-                  <PaginationItem>
-                    <PaginationLink href="#">9</PaginationLink>
-                  </PaginationItem>
-                  <PaginationItem>
-                    <PaginationLink href="#">10</PaginationLink>
-                  </PaginationItem>
-                  <PaginationItem>
-                    <PaginationNext href="#" />
-                  </PaginationItem>
-                </PaginationContent>
-              </Pagination>
-            </div>
-          </div>
-        </TabsContent>
-
-        <TabsContent value="asset-inventory" className="mt-6">
-          <div className="bg-white rounded-lg border border-gray-200">
-            <div className="p-6 border-b border-gray-200">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">IT Asset Inventory</h3>
-              
-              <div className="relative mb-4">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-                <Input
-                  placeholder="Search"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10"
-                />
+              <div className="p-4 border-t border-gray-200">
+                <Pagination>
+                  <PaginationContent>
+                    <PaginationItem>
+                      <PaginationPrevious href="#" />
+                    </PaginationItem>
+                    <PaginationItem>
+                      <PaginationLink href="#" isActive>1</PaginationLink>
+                    </PaginationItem>
+                    <PaginationItem>
+                      <PaginationLink href="#">2</PaginationLink>
+                    </PaginationItem>
+                    <PaginationItem>
+                      <PaginationLink href="#">3</PaginationLink>
+                    </PaginationItem>
+                    <PaginationItem>
+                      <span className="px-3 py-2">...</span>
+                    </PaginationItem>
+                    <PaginationItem>
+                      <PaginationLink href="#">8</PaginationLink>
+                    </PaginationItem>
+                    <PaginationItem>
+                      <PaginationLink href="#">9</PaginationLink>
+                    </PaginationItem>
+                    <PaginationItem>
+                      <PaginationLink href="#">10</PaginationLink>
+                    </PaginationItem>
+                    <PaginationItem>
+                      <PaginationNext href="#" />
+                    </PaginationItem>
+                  </PaginationContent>
+                </Pagination>
               </div>
             </div>
+          </TabsContent>
 
-            <div className="overflow-x-auto">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Asset Name</TableHead>
-                    <TableHead>Type</TableHead>
-                    <TableHead>Assigned To</TableHead>
-                    <TableHead>Department</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Condition</TableHead>
-                    <TableHead className="text-right">Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {filteredAssets.map((asset, index) => (
-                    <TableRow key={index}>
-                      <TableCell className="font-medium">{asset.name}</TableCell>
-                      <TableCell>{asset.type}</TableCell>
-                      <TableCell>{asset.assignedTo}</TableCell>
-                      <TableCell>{asset.department}</TableCell>
-                      <TableCell>{getStatusBadge(asset.status)}</TableCell>
-                      <TableCell>{getConditionBadge(asset.condition)}</TableCell>
-                      <TableCell className="text-right">
-                        <div className="flex justify-end space-x-2">
-                          <Button variant="outline" size="sm">
-                            View
-                          </Button>
-                          {asset.status === "Available" && (
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              className="text-green-600 border-green-600 hover:bg-green-50"
-                              onClick={() => handleAssignAsset(asset.name)}
-                            >
-                              Assign
-                            </Button>
-                          )}
-                        </div>
-                      </TableCell>
+          <TabsContent value="software-deployment" className="mt-6">
+            <div className="bg-white rounded-lg border border-gray-200">
+              <div className="p-6 border-b border-gray-200">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">Software Deployment</h3>
+                
+                <div className="relative mb-4">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+                  <Input
+                    placeholder="Search"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="pl-10"
+                  />
+                </div>
+              </div>
+
+              <div className="overflow-x-auto">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Ticket</TableHead>
+                      <TableHead>Issue Title / Subject</TableHead>
+                      <TableHead>Department</TableHead>
+                      <TableHead>Status</TableHead>
+                      <TableHead>Priority</TableHead>
+                      <TableHead>Assigned to</TableHead>
+                      <TableHead className="text-right">Actions</TableHead>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
+                  </TableHeader>
+                  <TableBody>
+                    {filteredTickets.filter(ticket => ticket.title.includes("Software") || ticket.title.includes("installation")).map((ticket) => (
+                      <TableRow key={ticket.id}>
+                        <TableCell className="font-medium">{ticket.id}</TableCell>
+                        <TableCell>{ticket.title}</TableCell>
+                        <TableCell>{ticket.department}</TableCell>
+                        <TableCell>{getStatusBadge(ticket.status)}</TableCell>
+                        <TableCell>{getPriorityBadge(ticket.priority)}</TableCell>
+                        <TableCell>{ticket.assignedTo}</TableCell>
+                        <TableCell className="text-right">
+                          <div className="flex justify-end space-x-2">
+                            <Button variant="outline" size="sm">
+                              View
+                            </Button>
+                            {ticket.status === "In Progress" && (
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                className="text-green-600 border-green-600 hover:bg-green-50"
+                              >
+                                Resolved
+                              </Button>
+                            )}
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
 
-            <div className="p-4 border-t border-gray-200">
-              <Pagination>
-                <PaginationContent>
-                  <PaginationItem>
-                    <PaginationPrevious href="#" />
-                  </PaginationItem>
-                  <PaginationItem>
-                    <PaginationLink href="#" isActive>1</PaginationLink>
-                  </PaginationItem>
-                  <PaginationItem>
-                    <PaginationLink href="#">2</PaginationLink>
-                  </PaginationItem>
-                  <PaginationItem>
-                    <PaginationLink href="#">3</PaginationLink>
-                  </PaginationItem>
-                  <PaginationItem>
-                    <span className="px-3 py-2">...</span>
-                  </PaginationItem>
-                  <PaginationItem>
-                    <PaginationLink href="#">8</PaginationLink>
-                  </PaginationItem>
-                  <PaginationItem>
-                    <PaginationLink href="#">9</PaginationLink>
-                  </PaginationItem>
-                  <PaginationItem>
-                    <PaginationLink href="#">10</PaginationLink>
-                  </PaginationItem>
-                  <PaginationItem>
-                    <PaginationNext href="#" />
-                  </PaginationItem>
-                </PaginationContent>
-              </Pagination>
-            </div>
-          </div>
-        </TabsContent>
-
-        <TabsContent value="software-deployment" className="mt-6">
-          <div className="bg-white rounded-lg border border-gray-200">
-            <div className="p-6 border-b border-gray-200">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Software Deployment</h3>
-              
-              <div className="relative mb-4">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-                <Input
-                  placeholder="Search"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10"
-                />
+              <div className="p-4 border-t border-gray-200">
+                <Pagination>
+                  <PaginationContent>
+                    <PaginationItem>
+                      <PaginationPrevious href="#" />
+                    </PaginationItem>
+                    <PaginationItem>
+                      <PaginationLink href="#" isActive>1</PaginationLink>
+                    </PaginationItem>
+                    <PaginationItem>
+                      <PaginationLink href="#">2</PaginationLink>
+                    </PaginationItem>
+                    <PaginationItem>
+                      <PaginationLink href="#">3</PaginationLink>
+                    </PaginationItem>
+                    <PaginationItem>
+                      <span className="px-3 py-2">...</span>
+                    </PaginationItem>
+                    <PaginationItem>
+                      <PaginationLink href="#">8</PaginationLink>
+                    </PaginationItem>
+                    <PaginationItem>
+                      <PaginationLink href="#">9</PaginationLink>
+                    </PaginationItem>
+                    <PaginationItem>
+                      <PaginationLink href="#">10</PaginationLink>
+                    </PaginationItem>
+                    <PaginationItem>
+                      <PaginationNext href="#" />
+                    </PaginationItem>
+                  </PaginationContent>
+                </Pagination>
               </div>
             </div>
+          </TabsContent>
+        </Tabs>
+      </div>
 
-            <div className="overflow-x-auto">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Ticket</TableHead>
-                    <TableHead>Issue Title / Subject</TableHead>
-                    <TableHead>Department</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Priority</TableHead>
-                    <TableHead>Assigned to</TableHead>
-                    <TableHead className="text-right">Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {filteredTickets.filter(ticket => ticket.title.includes("Software") || ticket.title.includes("installation")).map((ticket) => (
-                    <TableRow key={ticket.id}>
-                      <TableCell className="font-medium">{ticket.id}</TableCell>
-                      <TableCell>{ticket.title}</TableCell>
-                      <TableCell>{ticket.department}</TableCell>
-                      <TableCell>{getStatusBadge(ticket.status)}</TableCell>
-                      <TableCell>{getPriorityBadge(ticket.priority)}</TableCell>
-                      <TableCell>{ticket.assignedTo}</TableCell>
-                      <TableCell className="text-right">
-                        <div className="flex justify-end space-x-2">
-                          <Button variant="outline" size="sm">
-                            View
-                          </Button>
-                          {ticket.status === "In Progress" && (
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              className="text-green-600 border-green-600 hover:bg-green-50"
-                            >
-                              Resolved
-                            </Button>
-                          )}
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
+      {/* Modals */}
+      <AssignTechnicianModal
+        isOpen={showAssignTechnicianModal}
+        onClose={() => setShowAssignTechnicianModal(false)}
+        onAssign={handleTechnicianAssignment}
+        selectedTicket={selectedTicket}
+      />
 
-            <div className="p-4 border-t border-gray-200">
-              <Pagination>
-                <PaginationContent>
-                  <PaginationItem>
-                    <PaginationPrevious href="#" />
-                  </PaginationItem>
-                  <PaginationItem>
-                    <PaginationLink href="#" isActive>1</PaginationLink>
-                  </PaginationItem>
-                  <PaginationItem>
-                    <PaginationLink href="#">2</PaginationLink>
-                  </PaginationItem>
-                  <PaginationItem>
-                    <PaginationLink href="#">3</PaginationLink>
-                  </PaginationItem>
-                  <PaginationItem>
-                    <span className="px-3 py-2">...</span>
-                  </PaginationItem>
-                  <PaginationItem>
-                    <PaginationLink href="#">8</PaginationLink>
-                  </PaginationItem>
-                  <PaginationItem>
-                    <PaginationLink href="#">9</PaginationLink>
-                  </PaginationItem>
-                  <PaginationItem>
-                    <PaginationLink href="#">10</PaginationLink>
-                  </PaginationItem>
-                  <PaginationItem>
-                    <PaginationNext href="#" />
-                  </PaginationItem>
-                </PaginationContent>
-              </Pagination>
-            </div>
-          </div>
-        </TabsContent>
-      </Tabs>
-    </div>
+      <AssignAssetModal
+        isOpen={showAssignAssetModal}
+        onClose={() => setShowAssignAssetModal(false)}
+        onAssign={handleAssetAssignment}
+        selectedAsset={selectedAsset}
+      />
+
+      <TicketResolutionModal
+        isOpen={showTicketResolutionModal}
+        onClose={() => setShowTicketResolutionModal(false)}
+        onConfirm={handleTicketResolution}
+        ticket={selectedTicket}
+      />
+
+      <AssetAssignmentSuccessModal
+        isOpen={showAssetSuccessModal}
+        onClose={() => setShowAssetSuccessModal(false)}
+        onViewRecord={handleViewAssetRecord}
+        assetName={selectedAsset?.name}
+      />
+    </>
   );
 };
 
