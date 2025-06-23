@@ -1,4 +1,3 @@
-
 import { 
   LayoutDashboard, 
   Activity, 
@@ -33,10 +32,11 @@ interface AppSidebarProps {
   onShowActionCenter?: () => void;
   onShowAIRobotics?: () => void;
   onShowRegistry?: () => void;
+  onShowICTSolutions?: () => void;
   currentView?: string;
 }
 
-export function AppSidebar({ onShowPlanning, onShowAccounting, onShowHR, onShowActionCenter, onShowAIRobotics, onShowRegistry, currentView }: AppSidebarProps) {
+export function AppSidebar({ onShowPlanning, onShowAccounting, onShowHR, onShowActionCenter, onShowAIRobotics, onShowRegistry, onShowICTSolutions, currentView }: AppSidebarProps) {
   const handleDashboardClick = () => {
     // Reset to main dashboard
     window.location.reload();
@@ -96,8 +96,8 @@ export function AppSidebar({ onShowPlanning, onShowAccounting, onShowHR, onShowA
     { 
       icon: Monitor, 
       label: "ICT Solutions",
-      active: false,
-      onClick: undefined
+      active: currentView === "ict-solutions",
+      onClick: onShowICTSolutions
     },
     { 
       icon: Info, 

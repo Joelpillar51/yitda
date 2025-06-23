@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { AppSidebar } from "@/components/Sidebar";
 import { Header } from "@/components/Header";
@@ -24,6 +23,7 @@ import { KPIDetailView } from "@/components/KPIDetailView";
 import { ActionCenter } from "@/components/ActionCenter";
 import { AIRobotics } from "@/components/AIRobotics";
 import { Registry } from "@/components/Registry";
+import ICTSolutions from "@/components/ICTSolutions";
 import { SidebarInset } from "@/components/ui/sidebar";
 
 const Index = () => {
@@ -118,7 +118,16 @@ const Index = () => {
     setCurrentView("registry");
   };
 
+  const handleShowICTSolutions = () => {
+    setCurrentView("ict-solutions");
+  };
+
   const renderMainContent = () => {
+    // ICT Solutions view
+    if (currentView === "ict-solutions") {
+      return <ICTSolutions />;
+    }
+
     // Registry view
     if (currentView === "registry") {
       return <Registry />;
@@ -254,6 +263,7 @@ const Index = () => {
         onShowActionCenter={handleShowActionCenter}
         onShowAIRobotics={handleShowAIRobotics}
         onShowRegistry={handleShowRegistry}
+        onShowICTSolutions={handleShowICTSolutions}
         currentView={currentView} 
       />
       <SidebarInset className="flex-1 flex flex-col">
