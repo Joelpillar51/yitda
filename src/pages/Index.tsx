@@ -24,6 +24,7 @@ import { ActionCenter } from "@/components/ActionCenter";
 import { AIRobotics } from "@/components/AIRobotics";
 import { Registry } from "@/components/Registry";
 import ICTSolutions from "@/components/ICTSolutions";
+import Information from "@/components/Information";
 import { SidebarInset } from "@/components/ui/sidebar";
 
 const Index = () => {
@@ -122,6 +123,10 @@ const Index = () => {
     setCurrentView("ict-solutions");
   };
 
+  const handleShowInformation = () => {
+    setCurrentView("information");
+  };
+
   const renderMainContent = () => {
     // ICT Solutions view
     if (currentView === "ict-solutions") {
@@ -218,6 +223,11 @@ const Index = () => {
       );
     }
 
+    // Information view
+    if (currentView === "information") {
+      return <Information />;
+    }
+
     // Default dashboard view - show the new Dashboard component
     return <Dashboard />;
   };
@@ -264,6 +274,7 @@ const Index = () => {
         onShowAIRobotics={handleShowAIRobotics}
         onShowRegistry={handleShowRegistry}
         onShowICTSolutions={handleShowICTSolutions}
+        onShowInformation={handleShowInformation}
         currentView={currentView} 
       />
       <SidebarInset className="flex-1 flex flex-col">
