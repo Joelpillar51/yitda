@@ -26,6 +26,7 @@ import { Registry } from "@/components/Registry";
 import ICTSolutions from "@/components/ICTSolutions";
 import Information from "@/components/Information";
 import { SidebarInset } from "@/components/ui/sidebar";
+import DataProcessing from "@/components/DataProcessing";
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState("overview");
@@ -127,7 +128,16 @@ const Index = () => {
     setCurrentView("information");
   };
 
+  const handleShowDataProcessing = () => {
+    setCurrentView("data-processing");
+  };
+
   const renderMainContent = () => {
+    // Data Processing view
+    if (currentView === "data-processing") {
+      return <DataProcessing />;
+    }
+
     // ICT Solutions view
     if (currentView === "ict-solutions") {
       return <ICTSolutions />;
@@ -275,6 +285,7 @@ const Index = () => {
         onShowRegistry={handleShowRegistry}
         onShowICTSolutions={handleShowICTSolutions}
         onShowInformation={handleShowInformation}
+        onShowDataProcessing={handleShowDataProcessing}
         currentView={currentView} 
       />
       <SidebarInset className="flex-1 flex flex-col">

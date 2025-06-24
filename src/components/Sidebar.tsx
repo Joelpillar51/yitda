@@ -34,10 +34,11 @@ interface AppSidebarProps {
   onShowRegistry?: () => void;
   onShowICTSolutions?: () => void;
   onShowInformation?: () => void;
+  onShowDataProcessing?: () => void;
   currentView?: string;
 }
 
-export function AppSidebar({ onShowPlanning, onShowAccounting, onShowHR, onShowActionCenter, onShowAIRobotics, onShowRegistry, onShowICTSolutions, onShowInformation, currentView }: AppSidebarProps & { onShowInformation?: () => void }) {
+export function AppSidebar({ onShowPlanning, onShowAccounting, onShowHR, onShowActionCenter, onShowAIRobotics, onShowRegistry, onShowICTSolutions, onShowInformation, onShowDataProcessing, currentView }: AppSidebarProps) {
   const handleDashboardClick = () => {
     // Reset to main dashboard
     window.location.reload();
@@ -109,8 +110,8 @@ export function AppSidebar({ onShowPlanning, onShowAccounting, onShowHR, onShowA
     { 
       icon: Database, 
       label: "Data Processing",
-      active: false,
-      onClick: undefined
+      active: currentView === "data-processing",
+      onClick: onShowDataProcessing
     },
     { 
       icon: BarChart3, 
