@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { AppSidebar } from "@/components/Sidebar";
 import { Header } from "@/components/Header";
@@ -25,8 +26,9 @@ import { AIRobotics } from "@/components/AIRobotics";
 import { Registry } from "@/components/Registry";
 import ICTSolutions from "@/components/ICTSolutions";
 import Information from "@/components/Information";
-import { SidebarInset } from "@/components/ui/sidebar";
 import DataProcessing from "@/components/DataProcessing";
+import Maintenance from "@/components/Maintenance";
+import { SidebarInset } from "@/components/ui/sidebar";
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState("overview");
@@ -132,7 +134,16 @@ const Index = () => {
     setCurrentView("data-processing");
   };
 
+  const handleShowMaintenance = () => {
+    setCurrentView("maintenance");
+  };
+
   const renderMainContent = () => {
+    // Maintenance view
+    if (currentView === "maintenance") {
+      return <Maintenance />;
+    }
+
     // Data Processing view
     if (currentView === "data-processing") {
       return <DataProcessing />;
@@ -286,6 +297,7 @@ const Index = () => {
         onShowICTSolutions={handleShowICTSolutions}
         onShowInformation={handleShowInformation}
         onShowDataProcessing={handleShowDataProcessing}
+        onShowMaintenance={handleShowMaintenance}
         currentView={currentView} 
       />
       <SidebarInset className="flex-1 flex flex-col">

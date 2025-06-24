@@ -1,3 +1,4 @@
+
 import { 
   LayoutDashboard, 
   Activity, 
@@ -35,10 +36,11 @@ interface AppSidebarProps {
   onShowICTSolutions?: () => void;
   onShowInformation?: () => void;
   onShowDataProcessing?: () => void;
+  onShowMaintenance?: () => void;
   currentView?: string;
 }
 
-export function AppSidebar({ onShowPlanning, onShowAccounting, onShowHR, onShowActionCenter, onShowAIRobotics, onShowRegistry, onShowICTSolutions, onShowInformation, onShowDataProcessing, currentView }: AppSidebarProps) {
+export function AppSidebar({ onShowPlanning, onShowAccounting, onShowHR, onShowActionCenter, onShowAIRobotics, onShowRegistry, onShowICTSolutions, onShowInformation, onShowDataProcessing, onShowMaintenance, currentView }: AppSidebarProps) {
   const handleDashboardClick = () => {
     // Reset to main dashboard
     window.location.reload();
@@ -122,8 +124,8 @@ export function AppSidebar({ onShowPlanning, onShowAccounting, onShowHR, onShowA
     { 
       icon: Wrench, 
       label: "Maintenance",
-      active: false,
-      onClick: undefined
+      active: currentView === "maintenance",
+      onClick: onShowMaintenance
     },
   ];
 
