@@ -37,13 +37,13 @@ export function RecentActivities() {
 
   return (
     <div className="bg-white rounded-lg border border-gray-200">
-      <div className="p-6 border-b border-gray-200">
+      <div className="p-4 sm:p-6 border-b border-gray-200">
         <h2 className="text-lg font-semibold text-gray-900">Recent Activities</h2>
       </div>
       
-      <div className="p-6">
+      <div className="p-4 sm:p-6">
         <div className="mb-4">
-          <div className="relative max-w-md">
+          <div className="relative max-w-full sm:max-w-md">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={16} />
             <input
               type="text"
@@ -54,20 +54,20 @@ export function RecentActivities() {
         </div>
 
         <div className="overflow-x-auto">
-          <table className="w-full">
+          <table className="w-full min-w-[500px]">
             <thead>
               <tr className="border-b border-gray-200">
-                <th className="text-left py-3 px-4 font-medium text-gray-500 text-sm">S/N</th>
-                <th className="text-left py-3 px-4 font-medium text-gray-500 text-sm">Time</th>
-                <th className="text-left py-3 px-4 font-medium text-gray-500 text-sm">Activity</th>
+                <th className="text-left py-3 px-2 sm:px-4 font-medium text-gray-500 text-sm">S/N</th>
+                <th className="text-left py-3 px-2 sm:px-4 font-medium text-gray-500 text-sm">Time</th>
+                <th className="text-left py-3 px-2 sm:px-4 font-medium text-gray-500 text-sm">Activity</th>
               </tr>
             </thead>
             <tbody>
               {activities.map((activity) => (
                 <tr key={activity.id} className="border-b border-gray-100 hover:bg-gray-50">
-                  <td className="py-4 px-4 text-sm text-gray-900">{activity.id}</td>
-                  <td className="py-4 px-4 text-sm text-gray-600">{activity.time}</td>
-                  <td className="py-4 px-4 text-sm text-gray-900">{activity.activity}</td>
+                  <td className="py-3 sm:py-4 px-2 sm:px-4 text-sm text-gray-900">{activity.id}</td>
+                  <td className="py-3 sm:py-4 px-2 sm:px-4 text-sm text-gray-600 whitespace-nowrap">{activity.time}</td>
+                  <td className="py-3 sm:py-4 px-2 sm:px-4 text-sm text-gray-900">{activity.activity}</td>
                 </tr>
               ))}
             </tbody>

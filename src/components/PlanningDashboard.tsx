@@ -119,17 +119,17 @@ export function PlanningDashboard({
     switch (activeTab) {
       case "strategic-projects":
         return (
-          <div className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="space-y-4 sm:space-y-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
               {statsCards.map((card, index) => (
-                <div key={index} className="bg-white p-6 rounded-lg border border-gray-200">
-                  <div className="flex items-center space-x-4">
-                    <div className="p-3 bg-green-100 rounded-lg">
-                      <card.icon className="w-6 h-6 text-green-600" />
+                <div key={index} className="bg-white p-4 sm:p-6 rounded-lg border border-gray-200">
+                  <div className="flex items-center space-x-3 sm:space-x-4">
+                    <div className="p-2 sm:p-3 bg-green-100 rounded-lg">
+                      <card.icon className="w-5 h-5 sm:w-6 sm:h-6 text-green-600" />
                     </div>
                     <div>
-                      <div className="text-2xl font-bold text-gray-900">{card.title}</div>
-                      <div className={`text-sm ${card.color}`}>{card.subtitle}</div>
+                      <div className="text-xl sm:text-2xl font-bold text-gray-900">{card.title}</div>
+                      <div className={`text-xs sm:text-sm ${card.color} leading-tight`}>{card.subtitle}</div>
                     </div>
                   </div>
                 </div>
@@ -137,10 +137,11 @@ export function PlanningDashboard({
             </div>
 
             <div className="bg-white rounded-lg border border-gray-200">
-              <div className="p-6 border-b border-gray-200">
-                <div className="flex items-center justify-between">
+              <div className="p-4 sm:p-6 border-b border-gray-200">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                   <h3 className="text-lg font-semibold text-gray-900">Strategic Projects</h3>
-                  <Button onClick={onAddProject} className="bg-green-600 hover:bg-green-700 text-white">
+                  <Button onClick={onAddProject} className="bg-green-600 hover:bg-green-700 text-white w-full sm:w-auto">
+                    <Plus className="w-4 h-4 mr-2 sm:hidden" />
                     Add New Project
                   </Button>
                 </div>
@@ -150,68 +151,72 @@ export function PlanningDashboard({
                     <input
                       type="text"
                       placeholder="Search"
-                      className="w-full max-w-md pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                      className="w-full sm:max-w-md pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
                     />
                   </div>
                 </div>
               </div>
 
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>S/N</TableHead>
-                    <TableHead>Project Name</TableHead>
-                    <TableHead>Budget</TableHead>
-                    <TableHead>Department</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Timeline</TableHead>
-                    <TableHead>Progress</TableHead>
-                    <TableHead>Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {strategicProjects.map((project, index) => (
-                    <TableRow key={project.id}>
-                      <TableCell>{index + 1}</TableCell>
-                      <TableCell>{project.name}</TableCell>
-                      <TableCell>{project.budget}</TableCell>
-                      <TableCell>{project.department}</TableCell>
-                      <TableCell>{getStatusBadge(project.status)}</TableCell>
-                      <TableCell>{project.timeline}</TableCell>
-                      <TableCell>{project.progress}</TableCell>
-                      <TableCell>
-                        <div className="flex space-x-2">
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => onViewProject?.(project)}
-                          >
-                            View
-                          </Button>
-                          {project.status === "Pending" && (
-                            <>
-                              <Button
-                                size="sm"
-                                className="bg-green-600 hover:bg-green-700 text-white"
-                                onClick={() => handleApproveProject(project)}
-                              >
-                                Approve
-                              </Button>
-                              <Button
-                                size="sm"
-                                variant="destructive"
-                                onClick={() => handleRejectProject(project)}
-                              >
-                                Reject
-                              </Button>
-                            </>
-                          )}
-                        </div>
-                      </TableCell>
+              <div className="overflow-x-auto">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead className="whitespace-nowrap">S/N</TableHead>
+                      <TableHead className="whitespace-nowrap">Project Name</TableHead>
+                      <TableHead className="whitespace-nowrap">Budget</TableHead>
+                      <TableHead className="whitespace-nowrap">Department</TableHead>
+                      <TableHead className="whitespace-nowrap">Status</TableHead>
+                      <TableHead className="whitespace-nowrap">Timeline</TableHead>
+                      <TableHead className="whitespace-nowrap">Progress</TableHead>
+                      <TableHead className="whitespace-nowrap">Actions</TableHead>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+                  </TableHeader>
+                  <TableBody>
+                    {strategicProjects.map((project, index) => (
+                      <TableRow key={project.id}>
+                        <TableCell className="whitespace-nowrap">{index + 1}</TableCell>
+                        <TableCell className="whitespace-nowrap">{project.name}</TableCell>
+                        <TableCell className="whitespace-nowrap">{project.budget}</TableCell>
+                        <TableCell className="whitespace-nowrap">{project.department}</TableCell>
+                        <TableCell className="whitespace-nowrap">{getStatusBadge(project.status)}</TableCell>
+                        <TableCell className="whitespace-nowrap">{project.timeline}</TableCell>
+                        <TableCell className="whitespace-nowrap">{project.progress}</TableCell>
+                        <TableCell className="whitespace-nowrap">
+                          <div className="flex flex-col sm:flex-row gap-1 sm:gap-2">
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => onViewProject?.(project)}
+                              className="text-xs"
+                            >
+                              View
+                            </Button>
+                            {project.status === "Pending" && (
+                              <>
+                                <Button
+                                  size="sm"
+                                  className="bg-green-600 hover:bg-green-700 text-white text-xs"
+                                  onClick={() => handleApproveProject(project)}
+                                >
+                                  Approve
+                                </Button>
+                                <Button
+                                  size="sm"
+                                  variant="destructive"
+                                  onClick={() => handleRejectProject(project)}
+                                  className="text-xs"
+                                >
+                                  Reject
+                                </Button>
+                              </>
+                            )}
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
 
               <div className="p-4 border-t border-gray-200">
                 <Pagination>
@@ -396,12 +401,12 @@ export function PlanningDashboard({
   };
 
   return (
-    <div className="space-y-6">
-      <div className="border-b border-gray-200">
-        <nav className="-mb-px flex space-x-8">
+    <div className="space-y-4 sm:space-y-6">
+      <div className="border-b border-gray-200 overflow-x-auto">
+        <nav className="-mb-px flex space-x-4 sm:space-x-8 min-w-max px-4 sm:px-0">
           <button
             onClick={() => setActiveTab("strategic-projects")}
-            className={`py-2 px-1 border-b-2 font-medium text-sm transition-colors ${
+            className={`py-2 px-1 border-b-2 font-medium text-sm transition-colors whitespace-nowrap ${
               activeTab === "strategic-projects"
                 ? "border-green-500 text-green-600 bg-green-100"
                 : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
@@ -411,7 +416,7 @@ export function PlanningDashboard({
           </button>
           <button
             onClick={() => setActiveTab("policy-documents")}
-            className={`py-2 px-1 border-b-2 font-medium text-sm transition-colors ${
+            className={`py-2 px-1 border-b-2 font-medium text-sm transition-colors whitespace-nowrap ${
               activeTab === "policy-documents"
                 ? "border-green-500 text-green-600 bg-green-100"
                 : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
@@ -421,7 +426,7 @@ export function PlanningDashboard({
           </button>
           <button
             onClick={() => setActiveTab("departmental-goals")}
-            className={`py-2 px-1 border-b-2 font-medium text-sm transition-colors ${
+            className={`py-2 px-1 border-b-2 font-medium text-sm transition-colors whitespace-nowrap ${
               activeTab === "departmental-goals"
                 ? "border-green-500 text-green-600 bg-green-100"
                 : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"

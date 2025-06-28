@@ -302,8 +302,8 @@ const Index = () => {
       />
       <SidebarInset className="flex-1 flex flex-col">
         <Header />
-        <div className="flex-1 p-4 lg:p-6">
-          <div className="max-w-7xl mx-auto">
+        <div className="flex-1 p-3 sm:p-4 lg:p-6">
+          <div className="max-w-full mx-auto">
             {renderMainContent()}
           </div>
         </div>

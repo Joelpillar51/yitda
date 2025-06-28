@@ -345,53 +345,53 @@ export function AccountingDashboard({ onViewPaymentRequest, onProcessPayment }: 
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div className="bg-white p-6 rounded-lg border border-gray-200">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+        <div className="bg-white p-4 sm:p-6 rounded-lg border border-gray-200">
           <div className="flex items-center">
-            <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mr-4">
-              <div className="w-6 h-6 bg-green-600 rounded"></div>
+            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-green-100 rounded-lg flex items-center justify-center mr-3 sm:mr-4">
+              <div className="w-5 h-5 sm:w-6 sm:h-6 bg-green-600 rounded"></div>
             </div>
             <div>
-              <p className="text-2xl font-bold text-gray-900">₦230M</p>
-              <p className="text-sm text-gray-600">TOTAL BUDGET (YTD)</p>
+              <p className="text-xl sm:text-2xl font-bold text-gray-900">₦230M</p>
+              <p className="text-xs sm:text-sm text-gray-600 leading-tight">TOTAL BUDGET (YTD)</p>
             </div>
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-lg border border-gray-200">
+        <div className="bg-white p-4 sm:p-6 rounded-lg border border-gray-200">
           <div className="flex items-center">
-            <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
-              <div className="w-6 h-6 bg-blue-600 rounded"></div>
+            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-blue-100 rounded-lg flex items-center justify-center mr-3 sm:mr-4">
+              <div className="w-5 h-5 sm:w-6 sm:h-6 bg-blue-600 rounded"></div>
             </div>
             <div>
-              <p className="text-2xl font-bold text-gray-900">₦185M</p>
-              <p className="text-sm text-gray-600">TOTAL EXPENSES</p>
+              <p className="text-xl sm:text-2xl font-bold text-gray-900">₦185M</p>
+              <p className="text-xs sm:text-sm text-gray-600 leading-tight">TOTAL EXPENSES</p>
             </div>
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-lg border border-gray-200">
+        <div className="bg-white p-4 sm:p-6 rounded-lg border border-gray-200">
           <div className="flex items-center">
-            <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mr-4">
-              <div className="w-6 h-6 bg-purple-600 rounded"></div>
+            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-purple-100 rounded-lg flex items-center justify-center mr-3 sm:mr-4">
+              <div className="w-5 h-5 sm:w-6 sm:h-6 bg-purple-600 rounded"></div>
             </div>
             <div>
-              <p className="text-2xl font-bold text-gray-900">₦5.2M</p>
-              <p className="text-sm text-gray-600">PENDING PAYMENTS</p>
+              <p className="text-xl sm:text-2xl font-bold text-gray-900">₦5.2M</p>
+              <p className="text-xs sm:text-sm text-gray-600 leading-tight">PENDING PAYMENTS</p>
             </div>
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-lg border border-gray-200">
+        <div className="bg-white p-4 sm:p-6 rounded-lg border border-gray-200">
           <div className="flex items-center">
-            <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center mr-4">
-              <div className="w-6 h-6 bg-gray-600 rounded"></div>
+            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gray-100 rounded-lg flex items-center justify-center mr-3 sm:mr-4">
+              <div className="w-5 h-5 sm:w-6 sm:h-6 bg-gray-600 rounded"></div>
             </div>
             <div>
-              <p className="text-2xl font-bold text-gray-900">₦12M</p>
-              <p className="text-sm text-gray-600">UNALLOCATED FUNDS</p>
+              <p className="text-xl sm:text-2xl font-bold text-gray-900">₦12M</p>
+              <p className="text-xs sm:text-sm text-gray-600 leading-tight">UNALLOCATED FUNDS</p>
             </div>
           </div>
         </div>
@@ -399,13 +399,13 @@ export function AccountingDashboard({ onViewPaymentRequest, onProcessPayment }: 
 
       {/* Tabs */}
       <div className="bg-white rounded-lg border border-gray-200">
-        <div className="border-b border-gray-200">
-          <nav className="flex space-x-8 px-6">
+        <div className="border-b border-gray-200 overflow-x-auto">
+          <nav className="flex space-x-4 sm:space-x-8 px-4 sm:px-6 min-w-max">
             {tabs.map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
+                className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors whitespace-nowrap ${
                   tab.active
                     ? "border-green-500 text-green-600 bg-green-50"
                     : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
@@ -417,7 +417,7 @@ export function AccountingDashboard({ onViewPaymentRequest, onProcessPayment }: 
           </nav>
         </div>
 
-        <div className="p-6">
+        <div className="p-4 sm:p-6">
           {renderTabContent()}
         </div>
       </div>
